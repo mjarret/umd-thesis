@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2015.8.2)  11 AUG 2015 13:03
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2015.8.2)  11 AUG 2015 13:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -376,10 +376,6 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 
 ]
 Chapter 1.
-
-Package natbib Warning: Citation `Ashbaugh1990' on page 1 undefined on input li
-ne 87.
-
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
@@ -404,14 +400,15 @@ Appendix B.
 [7
 
 
-]
-No file mainthesis.bbl.
-
-Package natbib Warning: There were undefined citations.
-
+] (build/mainthesis.bbl)
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 112.
+ [8
+
+
+
+]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 112.
-(build/mainthesis.aux)
+ (build/mainthesis.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 112.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 112.
 Package rerunfilecheck Info: File `mainthesis.out' has not changed.
@@ -422,23 +419,23 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 112.
 (\end occurred when \ifx on line 35 was incomplete)
 (\end occurred when \ifx on line 34 was incomplete) 
 Here is how much of TeX's memory you used:
- 8065 strings out of 494977
- 126389 string characters out of 6180184
+ 8076 strings out of 494977
+ 126552 string characters out of 6180184
  333251 words of memory out of 5000000
- 11223 multiletter control sequences out of 15000+600000
- 7538 words of font info for 27 fonts, out of 8000000 for 9000
+ 11227 multiletter control sequences out of 15000+600000
+ 7885 words of font info for 28 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
  29i,6n,35p,246b,403s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmsy10.pfb>
-Output written on build/mainthesis.pdf (16 pages, 65596 bytes).
+st/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmti12.pfb>
+Output written on build/mainthesis.pdf (17 pages, 69661 bytes).
 PDF statistics:
- 171 PDF objects out of 1000 (max. 8388607)
- 146 compressed objects within 2 object streams
- 32 named destinations out of 1000 (max. 500000)
- 105 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 183 PDF objects out of 1000 (max. 8388607)
+ 157 compressed objects within 2 object streams
+ 36 named destinations out of 1000 (max. 500000)
+ 113 words of extra memory for PDF output out of 10000 (max. 10000000)
 

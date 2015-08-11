@@ -11,3 +11,4 @@
 \contentsline {chapter}{\numberline {A}Test}{5}{appendix.A}
 \contentsline {section}{\numberline {A.1}Testing}{5}{section.A.1}
 \contentsline {chapter}{\numberline {B}Test 2}{7}{appendix.B}
+\contentsline {chapter}{Bibliography}{8}{section*.8}
