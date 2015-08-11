@@ -1,12 +1,86 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% umd-thesis.cls (v0.1)
+%% Copyright (c) 2015 by Michael Jarret. All rights reserved.
+%% See licensing information, below.
+%%
+%% Heritage:
+%% 	 GATECH-THESIS.CLS (v1.7)
+%%	   -- by Charles S. Wilson 2002
+%%	   -- as modified by Mitchel T. Keller (2 July 2010)
+%%
+%% Although this .cls file largely starts from scratch to adhere to the
+%% standards of the University of Maryland Electronic Dissertation Style
+%% Guide, I have borrowed quite a bit of code and inspiration from the
+%% original GATECH-THESIS.CLS. Please also see the heritage of that 
+%% CLS file for further heritage information.
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\umdthesisversion}{0.1}% current version number
+\newcommand{\umdthesisupdated}{2015/08/11}% date of last change(s)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% This program is free software; you can redistribute it and/or
+%% modify it under the terms of the GNU General Public License
+%% as published by the Free Software Foundation; either version 2
+%% of the License, or (at your option) any later version.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+%%
+%% See the COPYING file for license information.
+%%
+%% Note that the files contained within ThesisProposal.tar.gz have 
+%% their own licence.
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%	Presently there is little documentation for this CLS, but hopefully
+%% it will be improved as the project progresses.
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{umd-thesis}[10/08/2015 University of Maryland Thesis]
 
-% Redefine Chapter formatting
-\LoadClassWithOptions{thesis}
+% Test for going directly to base package
+\LoadClassWithOptions{report}
+
+% This will set the formatting for the table of contents and center the title
+\RequirePackage[titles]{tocloft}
+\renewcommand\cftchapfont{\normalfont}
+\renewcommand\cftchappagefont{\normalfont}
+\AtBeginDocument{\renewcommand\contentsname{\begin{center}Table of Contents 
+\end{center}}}
+
+% UMD Requires indenting
+\RequirePackage{indentfirst}
+
+% Use this package for appendices
+\RequirePackage[toc,page]{appendix}
+
+% Redefine Chapter/section/etc. formatting
 \RequirePackage{titlesec}
 	\titleformat{\chapter}
       {\normalfont\large}{Chapter \thechapter:}{1em}{}
-
+	\titleformat{\section}
+	  {\normalfont\large}{\thesection}{1em}{}
+	\titleformat{\subsection}
+	  {\normalfont\large}{\thesubsection}{1em}{}
+	\titleformat{\subsubsection}
+	  {\normalfont\large}{\thesubsubsection}{1em}{}  
+	\titleformat{\subsubsubsection}
+	  {\normalfont\large}{\thesubsubsubsection}{1em}{}
 
 %%%%%%    Document Layout
 %
@@ -145,13 +219,16 @@
 % Advisor Unit defaults to \@department and Advisor Institution
 % defaults to Georgia Institute of Technology.
 \newcommand{\principaladvisor}[1]{%
-  \@ifnextchar[{\principaladvisor@i{#1}}{\principaladvisor@i{#1}[\@department]}%]
+  
+\@ifnextchar[{\principaladvisor@i{#1}}{\principaladvisor@i{#1}[\@department]}%]
 }
 \def\principaladvisor@i#1[#2]{%
-  \@ifnextchar[{\principaladvisor@ii{#1}[#2]}{\principaladvisor@ii{#1}[#2][University of Maryland, College Park]}%]
+  
+\@ifnextchar[{\principaladvisor@ii{#1}[#2]}{\principaladvisor@ii{#1}[#2][University 
+of Maryland, College Park]}%]
 }
 \def\principaladvisor@ii#1[#2][#3]{%
-\ifx\empty#1\empty\else\def\@advisorforabstract{#1 \\ #2}\fi
+\ifx\empty#1\empty\else\def\@advisorforabstract{#1\\#2}\fi
 \ifx\empty#1\empty\else\def\@advisorname{#1}\fi	
 }          
 
@@ -167,7 +244,8 @@
   \@ifnextchar[{\coadvisor@i{#1}}{\coadvisor@i{#1}[\@department]}%]
 }
 \def\coadvisor@i#1[#2]{%
-  \@ifnextchar[{\coadvisor@ii{#1}[#2]}{\coadvisor@ii{#1}[#2][University of Maryland, College Park]}%]
+  \@ifnextchar[{\coadvisor@ii{#1}[#2]}{\coadvisor@ii{#1}[#2][University of 
+Maryland, College Park]}%]
 }
 \def\coadvisor@ii#1[#2][#3]{%
 \ifx\empty#1\empty\else\def\@coadvisorname{#1}\fi
@@ -193,7 +271,9 @@
   \@ifnextchar[{\committeechair@i{#1}}{\committeechair@i{#1}[\@department]}%]
 }
 \def\committeechair@i#1[#2]{%
-  \@ifnextchar[{\committeechair@ii{#1}[#2]}{\committeechair@ii{#1}[#2][University of Maryland, College Park]}%]
+  
+\@ifnextchar[{\committeechair@ii{#1}[#2]}{\committeechair@ii{#1}[#2][University 
+of Maryland, College Park]}%]
 }
 \def\committeechair@ii#1[#2][#3]{%
 \ifx\empty#1\empty\else\def\@chairname{#1}%
@@ -212,7 +292,8 @@
   \@ifnextchar[{\firstreader@i{#1}}{\firstreader@i{#1}[\@department]}%]
 }
 \def\firstreader@i#1[#2]{%
-  \@ifnextchar[{\firstreader@ii{#1}[#2]}{\firstreader@ii{#1}[#2][University of Maryland, College Park]}%]
+  \@ifnextchar[{\firstreader@ii{#1}[#2]}{\firstreader@ii{#1}[#2][University of 
+Maryland, College Park]}%]
 }
 \def\firstreader@ii#1[#2][#3]{%
 \ifx\empty#1\empty\else\def\@firstname{#1}%	
@@ -222,7 +303,8 @@
   \@ifnextchar[{\secondreader@i{#1}}{\secondreader@i{#1}[\@department]}%]
 }
 \def\secondreader@i#1[#2]{%
-  \@ifnextchar[{\secondreader@ii{#1}[#2]}{\secondreader@ii{#1}[#2][University of Maryland, College Park]}%]
+  \@ifnextchar[{\secondreader@ii{#1}[#2]}{\secondreader@ii{#1}[#2][University of 
+Maryland, College Park]}%]
 }
 \def\secondreader@ii#1[#2][#3]{%
 \ifx\empty#1\empty\else\def\@secondname{#1}%	
@@ -232,7 +314,8 @@
   \@ifnextchar[{\thirdreader@i{#1}}{\thirdreader@i{#1}[\@department]}%]
 }
 \def\thirdreader@i#1[#2]{%
-  \@ifnextchar[{\thirdreader@ii{#1}[#2]}{\thirdreader@ii{#1}[#2][University of Maryland, College Park]}%]
+  \@ifnextchar[{\thirdreader@ii{#1}[#2]}{\thirdreader@ii{#1}[#2][University of 
+Maryland, College Park]}%]
 }
 \def\thirdreader@ii#1[#2][#3]{%
 \ifx\empty#1\empty\else\def\@thirdname{#1}%	
@@ -242,7 +325,8 @@
   \@ifnextchar[{\fourthreader@i{#1}}{\fourthreader@i{#1}[\@department]}%]
 }
 \def\fourthreader@i#1[#2]{%
-  \@ifnextchar[{\fourthreader@ii{#1}[#2]}{\fourthreader@ii{#1}[#2][University of Maryland, College Park]}%]
+  \@ifnextchar[{\fourthreader@ii{#1}[#2]}{\fourthreader@ii{#1}[#2][University of 
+Maryland, College Park]}%]
 }
 \def\fourthreader@ii#1[#2][#3]{%
 \ifx\empty#1\empty\else\def\@fourthname{#1}%	
@@ -252,7 +336,8 @@
   \@ifnextchar[{\fifthreader@i{#1}}{\fifthreader@i{#1}[\@department]}%]
 }
 \def\fifthreader@i#1[#2]{%
-  \@ifnextchar[{\fifthreader@ii{#1}[#2]}{\fifthreader@ii{#1}[#2][University of Maryland, College Park]}%]
+  \@ifnextchar[{\fifthreader@ii{#1}[#2]}{\fifthreader@ii{#1}[#2][University of 
+Maryland, College Park]}%]
 }
 \def\fifthreader@ii#1[#2][#3]{%
 \ifx\empty#1\empty\else\def\@fifthname{#1}%	
@@ -262,7 +347,8 @@
   \@ifnextchar[{\sixthreader@i{#1}}{\sixthreader@i{#1}[\@department]}%]
 }
 \def\sixthreader@i#1[#2]{%
-  \@ifnextchar[{\sixthreader@ii{#1}[#2]}{\sixthreader@ii{#1}[#2][University of Maryland, College Park]}%]
+  \@ifnextchar[{\sixthreader@ii{#1}[#2]}{\sixthreader@ii{#1}[#2][University of 
+Maryland, College Park]}%]
 }
 \def\sixthreader@ii#1[#2][#3]{%
 \ifx\empty#1\empty\else\def\@sixthname{#1}%	
@@ -274,8 +360,7 @@
 \newcommand{\makecopyright}{
   \typeout{*****************      Copyright     ******************}
   \if@openright\cleardoublepage\else\clearpage\fi 
-  \addtocounter{page}{-1} 
-
+  \phantomsection
 \thispagestyle{empty}
 \hbox{\ }
 
@@ -299,28 +384,26 @@
   \typeout{*****************      TITLE     ******************}
   \if@openright\cleardoublepage\else\clearpage\fi 
   \pagenumbering{gobble}
-  \addtocounter{page}{-1} 
   \thispagestyle{empty}%
 
-\hbox{\ }
-
-\thispagestyle{empty}
 \hbox{\ }
 \vspace{1in}
 \singlespacing
 \small\normalsize
 \begin{center}
 
-\large{\MakeUppercase{\@title}}\\
-\ \\
-\ \\
-\large{by} \\
-\ \\
+\large{\MakeUppercase{\@title}}
+
+\vspace{2.5em}
+
+\large{by}
+
+\vspace{1.5em}
+
 \large{\@author}
-\ \\
-\ \\
-\ \\
-\ \\
+
+\vspace{3.5em}
+
 \normalsize
 Dissertation submitted to the Faculty of the Graduate School of the \\
 University of Maryland, College Park in partial fulfillment \\
@@ -360,7 +443,7 @@ of the requirements for the degree of \\
 \renewenvironment{abstract}{%
   \typeout{*****************      Abstract     ******************}
   \if@openright\cleardoublepage\else\clearpage\fi 
-  \addtocounter{page}{-1} 
+  \phantomsection
   \thispagestyle{empty}%
 
 \hbox{\ }
@@ -374,27 +457,27 @@ of the requirements for the degree of \\
 
 \end{center}
 
-\noindent \begin{minipage}[t]{0.3\textwidth} 
+\noindent \begin{minipage}[t]{0.32\textwidth}
 	\begin{flushleft} 
 		Title of dissertation:
 	\end{flushleft}	
-\end{minipage}    \hspace{.3em}
-\begin{minipage}[t]{0.7\textwidth}
+\end{minipage}
+\begin{minipage}[t]{0.68\textwidth}
 	\begin{flushleft}
-		{\large\MakeUppercase{\@title}} \\ \ \\
+		{\large\MakeUppercase{\@title} \\} \bigskip
 		{\large\@author, \@degree, \@gradyear} 
 	\end{flushleft}
 \end{minipage}
 
-\ \\
+\bigskip
 
-\noindent \begin{minipage}[t]{0.3\textwidth}
+\noindent \begin{minipage}[t]{0.32\textwidth}
 	\begin{flushleft}
 		Dissertation directed by:
 	\end{flushleft}	
-\end{minipage} \hspace{.3em}
-\begin{minipage}[t]{0.7\textwidth}
-	\large\@advisorforabstract
+\end{minipage}
+\begin{minipage}[t]{0.68\textwidth}
+	\large\@advisorforabstract 
 \end{minipage}
 
 \vspace{3em}
@@ -421,6 +504,7 @@ of the requirements for the degree of \\
 \newenvironment{dedication}{%
   \typeout{*****************    Dedication    ******************}
   \if@openright\cleardoublepage\else\clearpage\fi 
+  \phantomsection
 
 \doublespacing
 \small\normalsize
@@ -440,11 +524,7 @@ of the requirements for the degree of \\
 \newenvironment{foreword}{%
   \typeout{*****************    FOREWORD    ******************}
   \if@openright\cleardoublepage\else\clearpage\fi 
-%  \phantomsection%
-%  \addcontentsline{toc}{chapter}%
-  %Dedication
-
-%Dedication
+  \phantomsection
 
 \doublespacing
 \small\normalsize
@@ -471,6 +551,8 @@ of the requirements for the degree of \\
 \newenvironment{acknowledgements}{%
   \typeout{***************** Acknowledgements ******************}
   \if@openright\cleardoublepage\else\clearpage\fi 
+  \phantomsection
+  
 \doublespacing
 \small\normalsize
 \hbox{\ }
@@ -494,6 +576,7 @@ of the requirements for the degree of \\
 \newenvironment{preface}{%
   \typeout{*****************      Preface     ******************}
   \if@openright\cleardoublepage\else\clearpage\fi 
+  \phantomsection
 \doublespacing
 \small\normalsize
 \hbox{\ }
@@ -545,6 +628,18 @@ of the requirements for the degree of \\
 \let\stchapter\chapter
 \renewcommand{\chapter}{\clearpage\stchapter}
 
+% Hack to make sure appendices appear properly.
+\let\stappendix\appendix
+\renewcommand{\appendix}{
+	\clearpage
+	\setcounter{chapter}{0}
+	\renewcommand{\chaptername}{Appendix}
+	\renewcommand{\thechapter}{\Alph{chapter}}
+	\titleformat{\chapter}{\normalfont\large}{Appendix \thechapter:}{1em}{}
+	}
+
 % Hack to define the bibliography style
 \let\stbibliography\bibliography
-\renewcommand{\bibliography}{\singlespacing \small\normalsize \stbibliography}
+\renewcommand{\bibname}{\begin{center}Bibliography\end{center}}
+\renewcommand{\bibliography}{\singlespacing \small\normalsize \cleardoublepage 
+\phantomsection \addcontentsline{toc}{chapter}{Bibliography}\stbibliography}
