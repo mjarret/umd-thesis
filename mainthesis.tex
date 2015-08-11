@@ -1,0 +1,112 @@
+% June 2015 (TOC contents linked in blue in pdf file)
+% This template was prepared by Michael Jarret of the 
+% Joint Center for Quantum information and Computer Science, University of Maryland, College Park, MD
+% The template was last updated in August 2015
+% Thesis Main Page used with umd-thesis.cls based on the
+% University of Maryland Electronic Thesis and Dissertation (ETD) Style Guide (2015)
+
+% This template is based upon one prepared by Dorothea F. Brosius of the 
+% Institute for Electronics and Applied Physics, University of Maryland, College Park, MD
+% last updated in June 2015
+
+\documentclass[letterpaper,12pt]{umd-thesis}  %12pt is larger than 11pt
+      
+\usepackage{lipsum}
+\usepackage{hyperref,xcolor}					% This adds hyperlinks and allows you to choose the colors simply
+	\hypersetup{linktocpage, linkbordercolor=blue}					% This adds hyperlinks to the TOC
+\usepackage[numbers,sort&compress]{natbib}	% This is probably the most elegant citation package for the dissertation, but others can be used.
+\usepackage{cleveref}						% Cleveref package is helpful for references to equations/etc
+
+\bibliographystyle{plain}
+
+\title{Something about spectral graph theory and how physicists should actually care} % Dissertation Title
+\author{Michael Jarret} % Name as it appears on university records
+\department{Department of Physics}
+\gradyear{2016} % Year of graduation
+\degree{Doctor of Philosophy} % Your degree
+\principaladvisor{Professor Stephen P. Jordan}[Department of Computer Science] % Your {advisor}[his department][his institution]
+\coadvisor{Professor Alexey Gorshkov}[Department of Physics]% Comment out if no coadvisor
+
+% Add any additional committee members in alphabetical order below. Each accepts the format:
+% \reader{Name}[Department][Institution]. They will not be automatically ordered, so they must be
+% entered alphabetically.
+\firstreader{Professor Andrew Childs}[Department of Computer Science]
+\secondreader{Professor Bei-Lok Hu}[Department of Physics]
+\thirdreader{Professor Jacob Taylor}[Department of Physics]
+%\fourthreader{Reader Four}
+%\fifthreader{Reader Five}
+%\sixthreader{Reader Six}
+
+% Uncomment the following line if someone other than your advisor or your co-advisor is your chair and add his/her details
+% \committeechair{Chair}[Department][Institution] 
+
+% The options below should be self explanatory
+% \coadvisorischair % Only use this if you did not add a committe chair
+% \copyrightfalse
+% \tablespagefalse
+% \figurespagefalse
+% \contentspagefalse
+% \bibpagefalse
+
+\begin{document}
+
+% Type the abstract below
+\begin{abstract}
+    \lipsum[1]
+    \lipsum[2]
+    \lipsum[3]
+\end{abstract} 
+
+% This is the frontmater and can include the preface, foreword, dedication, and acknowledgements. Any
+% of these can be commented out if unwanted.
+\begin{preliminary}
+
+	\begin{preface}
+		\lipsum[4]
+	\end{preface}
+	
+	\begin{foreword}
+		\lipsum[5]
+	\end{foreword}
+
+	\begin{dedication}
+		To the ignorance of youth, without which this never would have happened.
+	\end{dedication}
+
+	\begin{acknowledgements}
+		\lipsum[6]
+	\end{acknowledgements}
+% if you need a "List of Symbols or Abbreviations" look into
+% gatech-thesis-gloss.sty.
+\end{preliminary}
+
+\chapter{Introduction}
+	\section{In the beginning, there was one.}
+	\lipsum[7] 
+	
+	Something that gets cited \cite{Ashbaugh1990}.
+	\section{Another section}
+	\lipsum[8]
+	
+\chapter{Preliminaries}
+	\lipsum[9]
+	\section{Bla}
+	\lipsum[10]
+	\subsection{blabla}
+	\lipsum[11]
+
+\appendix
+\chapter{Test}
+	\section{Testing}
+	 \lipsum[5]
+	 	\begin{equation}
+	 		-1 = e^{i \pi}
+	 	\end{equation}
+	 	
+	 \lipsum[10]
+\chapter{Test 2}
+	\lipsum[1]
+
+\bibliography{library.bib}
+
+\end{document}
