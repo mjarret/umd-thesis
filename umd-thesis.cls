@@ -109,7 +109,7 @@
 %% Now, set the margin-dependent values.
 %
 \addtolength{\textheight}{-2.5in}
-\setlength{\topmargin}{1in}
+\setlength{\topmargin}{0.75in}
 \setlength{\headsep}{0.75in}   % reduced by headheight, below
 \setlength{\footskip}{0.5in}
 \addtolength{\textwidth}{-2.5in}
@@ -185,28 +185,17 @@
 %
 %% Is there a different chair entirely?
 %
-\newif\ifotherchair
-\otherchairfalse % set to false by default 
+\newif\if@otherchair
+\@otherchairfalse % set to false by default 
 %
 %% Switch for printing copyright page
 %
-
-\newif\if@isthesis
-\@isthesisfalse % default to false
-\newcommand{\isthesis}{\@isthesistrue}
-
-\newif\if@copyright
-\@copyrighttrue % initially true by default
-\newcommand{\nocopyrightpage}{\@copyrightfalse}
-
+\newif\ifcopyright
+\copyrighttrue % initially true by default
 %% Switch for generating a list of figures
 %
 \newif\iffigurespage
 \figurespagetrue % initially true by default
-
-\newif\if@dedicationlabel
-\@dedicationlabeltrue % initially true by default
-\newcommand{\nodedicationlabel}{\@dedicationlabelfalse}
 
 %% Switch for generating a list of tables
 %
@@ -222,6 +211,7 @@
 %
 \newif\ifbibpage
 \bibpagetrue % initially true by default
+
 
 % Define \principaladvisor{} to take two optional arguments after the
 % name. Thus, the usage is 
@@ -415,7 +405,7 @@ Maryland, College Park]}%]
 \vspace{3.5em}
 
 \normalsize
-\if@isthesis{Thesis }\else{Dissertation }\fi submitted to the Faculty of the Graduate School of the \\
+Dissertation submitted to the Faculty of the Graduate School of the \\
 University of Maryland, College Park in partial fulfillment \\
 of the requirements for the degree of \\
 \@degree \\
@@ -432,7 +422,7 @@ of the requirements for the degree of \\
 	\if@coadvisorchair{\@coadvisorname, Chair/Co-Advisor \\
 	\@advisorname, Advisor	
 	}\fi
-	\ifotherchair{\@chairname , Chair \\
+	\if@otherchair{\@chairname , Chair \\
 		\@advisorname , Advisor \\
 		\ifhavecoadvisor{\@coadvisorname , Co-Advisor}}\fi 
 	\fi
@@ -524,14 +514,9 @@ of the requirements for the degree of \\
 
 \addcontentsline{toc}{chapter}{Dedication}
 
-\if@dedicationlabel{
-	\begin{center}
-		\large{Dedication} 
-		\vspace{5em}
-	\end{center} 
-	}\else{
-		\vspace{7em}
-	}\fi
+\begin{center}
+\large{Dedication}
+\end{center} 
 
 \begingroup
 }{\par \endgroup}%dedication
@@ -621,7 +606,7 @@ of the requirements for the degree of \\
   {  
     \pagenumbering{gobble}
       \maketitle
-		\if@copyright
+		\ifcopyright
 			\makecopyright
 		\fi
     \pagenumbering{roman}
