@@ -109,7 +109,7 @@
 %% Now, set the margin-dependent values.
 %
 \addtolength{\textheight}{-2.5in}
-\setlength{\topmargin}{0.75in}
+\setlength{\topmargin}{1in}
 \setlength{\headsep}{0.75in}   % reduced by headheight, below
 \setlength{\footskip}{0.5in}
 \addtolength{\textwidth}{-2.5in}
@@ -190,12 +190,23 @@
 %
 %% Switch for printing copyright page
 %
-\newif\ifcopyright
-\copyrighttrue % initially true by default
+
+\newif\if@isthesis
+\@isthesisfalse % default to false
+\newcommand{\isthesis}{\@isthesistrue}
+
+\newif\if@copyright
+\@copyrighttrue % initially true by default
+\newcommand{\nocopyrightpage}{\@copyrightfalse}
+
 %% Switch for generating a list of figures
 %
 \newif\iffigurespage
 \figurespagetrue % initially true by default
+
+\newif\if@dedicationlabel
+\@dedicationlabeltrue % initially true by default
+\newcommand{\nodedicationlabel}{\@dedicationlabelfalse}
 
 %% Switch for generating a list of tables
 %
@@ -211,7 +222,6 @@
 %
 \newif\ifbibpage
 \bibpagetrue % initially true by default
-
 
 % Define \principaladvisor{} to take two optional arguments after the
 % name. Thus, the usage is 
@@ -405,7 +415,7 @@ Maryland, College Park]}%]
 \vspace{3.5em}
 
 \normalsize
-Dissertation submitted to the Faculty of the Graduate School of the \\
+\if@isthesis{Thesis }\else{Dissertation }\fi submitted to the Faculty of the Graduate School of the \\
 University of Maryland, College Park in partial fulfillment \\
 of the requirements for the degree of \\
 \@degree \\
@@ -514,9 +524,14 @@ of the requirements for the degree of \\
 
 \addcontentsline{toc}{chapter}{Dedication}
 
-\begin{center}
-\large{Dedication}
-\end{center} 
+\if@dedicationlabel{
+	\begin{center}
+		\large{Dedication} 
+		\vspace{5em}
+	\end{center} 
+	}\else{
+		\vspace{7em}
+	}\fi
 
 \begingroup
 }{\par \endgroup}%dedication
@@ -606,7 +621,7 @@ of the requirements for the degree of \\
   {  
     \pagenumbering{gobble}
       \maketitle
-		\ifcopyright
+		\if@copyright
 			\makecopyright
 		\fi
     \pagenumbering{roman}
