@@ -1,0 +1,409 @@
+\chapter{Spectral Graph Theory}
+
+  The most natural mathematical formalism for analyzing the spectral gap of the operators governing the processes discussed in the previous chapter is spectral graph theory. In particular, we choose the formalism of combinatorial graph Laplacians, instead of normalized graph Laplacians. \footnote{For a review of the distinction, see \cite{Chung}.} Typically, the framework of normalized graph Laplacians is the more powerful approach, but in our context has great limitations. Most notably, the lowest eigenvector (ground-state) of a combinatorial Laplacian is always the uniform distribution and, for most of the processes that we wish to consider, is a (\textit{the}) physically-relevant distribution. In the case of normalized graph Laplacians, although regular graphs have a uniform ground-state, in general, the ground state at vertex $x$ is distributed like $d_x^{-1/2}$ where $d_x$ is the degree of vertex x.
+  
+  This adjusted ground-state, while mathematically advantageous, is difficult to understand physically and not a useful starting point for the adiabatic algorithm. Furthermore, there is presently no clear mapping between the spectrum of the normalized Laplacian and the combinatorial Laplacian, other than in the case of regular graphs.\footnote{Results in either setting apply equally well to both combinatorial and normalized Laplacians of $k$-regular graphs, since the spectrum maps neatly from the combinatorial to normalized case by a multiplicative factor of $1/k$.} This requires us to focus our attention primarily on the combinatorial Laplacian. Although not our focus, when not too distracting, we will occasionally explore properties of the normalized Laplacian.
+  
+  
+\section{Weighted Graph Laplacians}
+  Our object of interest is the weighted, undirected ``combinatorial'' graph Laplacian associated with a graph $G = (V,E,w)$ with weight function $w:V\times V \rightarrow \mathbb{R}^+$. We will somewhat abusively refer to eigenvalues of the combinatorial Laplacian of a graph $G$ as eigenvalues of $G$ and denote by $\lambda_i$ the $i$-th eigenvalue of $G$. We choose $w$ to satisfy the following three constraints,
+  \begin{enumerate}
+      \item $w(x,y) = 0$ if $(x,y) \notin E$,
+      \item $w(x,y) = w(y,x)$ for all $(x,y) \in E$, and
+      \item $w(x,x) = \sum_{\{x,y\} \in E} w(x,y)$.
+  \end{enumerate}
+  Although our analysis will apply equally well to disconnected graphs, we will always impose the further constraint that our graph be connected, or that $G$ cannot be decomposed into union of two disjoint graphs.
+  
+  The Laplacian then takes the form,
+  \begin{equation}\label{eqn:combinatorial-laplacian}
+    L(x,y) = 
+    \begin{cases}
+        w(x,x) & \text{if $x=y$} \\
+        -w(x,y) & \text{if $x \neq y$}.
+    \end{cases}
+  \end{equation}
+  It is also useful to write the Laplacian as a linear operator on the space of functions $\{f:V\rightarrow \mathbb{R}\}$. In keeping with spectral graph theory convention, we write $Lf(y)$ compactly for $[L f](y)$. It should be clear from \cref{eqn:combinatorial-laplacian} that 
+  \[
+    Lf(y) = w(y,y)f(y) - \sum_{x \in V} w(y,x)f(x)
+  \]
+  and utilizing the constraints on $w$, 
+  \begin{equation}\label{eqn:operator-equation}
+    Lf(y) = \sum_{\{x,y\} \in E} \left(f(y)-f(x)\right) w(x,y).
+  \end{equation}
+
+  It is instructive to reconstruct the unweighted Laplacian for $G$ from this definition. Simply let $w(x,y) = 1$ for all $(x,y) \in E$. Then, $w(x,x) = \sum_{y \sim x} 1 = d_x$. Thus, one finds that
+  \[
+    L(x,y) = 
+    \begin{cases}
+      d_x & \text{if $x=y$} \\
+      -1 & \text{if $(x,y) \in E$} \\
+      0 & \text{otherwise}.
+    \end{cases}
+  \]
+  Furthermore, the key property of a constant lowest eigenvector is preserved through this definition. To see this, we begin by examining the Rayleigh quotient
+  \begin{dgroup*}
+    \begin{dmath*}
+        \lambda_0 = \inf_f \Frac{\sum_{x,y} f_x f_y w(x,y)}{\sum_x f_x^2} 
+    \end{dmath*}
+    \begin{dmath*}
+        = \inf_f \Frac{\sum_{x} f_x^2 w(x,x) + \sum_{x \neq y} f_x f_y w(x,y)}{\sum_x f_x^2}
+    \end{dmath*}
+    \begin{dmath*}
+        = \inf_f \Frac{\sum_{x}\sum_{y \sim x}f_x^2 w(x,y) + 2 \sum_{\{x,y\} \in E} f_x f_y w(x,y)}{\sum_x f_x^2}
+    \end{dmath*}
+    \begin{dmath*}
+        = \inf_f \Frac{2\sum_{\{x,y\} \in E}f_x^2 w(x,y) + 2 \sum_{\{x,y\} \in E} f_x f_y w(x,y)}{\sum_x f_x^2}
+    \end{dmath*}
+    \begin{dmath*}
+        = \inf_f \Frac{\sum_{\{x,y\} \in E}(f_x^2 + f_y^2) w(x,y) + 2 \sum_{\{x,y\} \in E} f_x f_y w(x,y)}{\sum_x f_x^2}
+    \end{dmath*}
+    \begin{dmath*}
+        = \inf_f \Frac{\sum_{\{x,y\} \in E}(f_x^2 + f_y^2 -2f_x f_y) w(x,y)}{\sum_x f_x^2} 
+    \end{dmath*}
+    \begin{dmath*}
+        = \inf_f \Frac{\sum_{\{x,y\} \in E}(f_x - f_y)^2 w(x,y)}{\sum_x f_x^2}.
+    \end{dmath*}
+  \end{dgroup*}
+  Above, the third equality follows from the first and third constraints on $w$ and the fifth equality from the second constraint on $w$. Now, note that $w(x,y)(f_x -f_y)^2 \geq 0$ independently of the choice of $x,y$. This clearly implies that $\lambda_0 \geq 0$. By choosing $f_x = f_y = C$ for all $x \in V$, we see that $\lambda_0 = 0$ is achieved, and hence $f_x = f_y = C$ is an eigenvector associated with eigenvalue 0. 
+  
+  It is easy to see that we can achieve 0 in the numerator if and only if $f_x - f_y = 0$ whenever $w(x,y)\neq 0$. If the graph were disconnected, we could indeed choose $f_x = f_y = C_1$ for all $x,y$ in one connected component and $f_x' = f_y' = C_2$ in the other connected component and still achieve $\lambda_0 = 0$. This, however, clearly requires $C_1 = C_2$ in the case of a connected graph. Hence, in the case of a connected graph, the ground-state is unique.
+  
+  The first nontrivial eigenvalue of $G$ is clearly given by the Rayleigh quotient,
+  \begin{equation*}
+      \lambda_1 = \inf_{f \perp \mathbf{1}} \Frac{\sum_{(x,y) \in E}(f_x - f_y)^2 w(x,y)} {\sum_{x} f_x^2}
+  \end{equation*}
+  and furthermore,
+  \begin{equation}\label{eqn:graph-eigenvalues}
+      \lambda_i = \inf_{f \perp S_{i}} \Frac{\sum_{(x,y) \in E}(f_x - f_y)^2 w(x,y)} {\sum_{x} f_x^2}
+  \end{equation}
+  where $S_i$ is the subspace spanned by the $i$ lowest eigenvectors. The spectral gap $\gamma$ of a graph $G$ is then,
+  \[
+      \gamma := \lambda_1 - \lambda_0 = \lambda_1.
+  \]
+  
+
+\section{Dirichlet Eigenvalues}
+  To fully utilize the graph formalism, we consider a subgraph $S$ of a graph $G$. Let $V(S) \subseteq V$ be the vertices of $S$ and $E(S) \subseteq E$ be the edges of $S$. We write $\partial S = \{ (x,y) \in E \; \vert \; x \in V(S), y \notin V(S) \}$ and $\delta S = \{ x \in V \setminus V(S) \; \vert \; (x,y) \in \partial S \text{ for some } y \in V \}$. In other words, $\partial S$ is the set of all edges of $G$ with only one end in $S$. Then, $\delta S$ is the set of all vertices in $G \setminus S$ that are connected by an edge to some vertex in $S$.
+  
+  Now, consider functions $f: S \cup \delta S \rightarrow \mathbb{R}^{+}$. We write 
+  \begin{equation}\label{eqn:dirichlet-eigenvalues}
+    \lambda_i^{(D)} = \inf_{\substack{f\in D* \\ f \perp S_{i}^*}} \Frac{\sum_{\{x,y\} \in E(S)\cup \partial S}(f_x - f_y)^2 w(x,y)} {\sum_{x} f_x^2}
+  \end{equation}
+  where $D*$ is the space of functions $\{f: S \cup \delta S \rightarrow \mathbb{R}^{+} \}$ satisfying the Dirichlet condition
+  \[
+    f(x \in \delta S) = 0.
+  \]
+  
+  Note that, through an appropriate choice of $w$, one can specify the eigenvalues of all stoquastic Hamiltonians. To see this, fix a Hamiltonian 
+  \begin{equation}\label{eqn:hamiltonian-identity}
+      H = L + W
+  \end{equation}
+  where $L$ is a combinatorial graph Laplacian and $W$ is some diagonal matrix which can be identified with a physical potential. Because shifts $H \mapsto H + c I$ adjust the spectrum by uniformly adding the constant $c$, we can restrict to the case that $W \geq 0$ without loss of generality. Then, $W$ is a linear operator satisfying $W:S \rightarrow \mathbb{R}^+$. 
+  
+  We choose a host graph $G$ for $S$ such that
+  \begin{enumerate}
+      \item $S$ is the graph corresponding to $L$, and
+      \item $W(x) = \sum_{y \in \delta S} w(x,y)$.
+  \end{enumerate}
+  
+  Then, \cref{eqn:dirichlet-eigenvalues} becomes
+  \begin{dgroup*}
+    \begin{dmath*}
+        \lambda_i^{(D)} = \inf_{\substack{f\in D* \\ f \perp S_{i}^*}} \Frac{\sum_{\{x,y\} \in E(S) \cup \partial S}(f_x - f_y)^2 w(x,y)} {\sum_{x \in V(S)} f_x^2}
+    \end{dmath*}
+    \begin{dmath*}
+        = \inf_{\substack{f\in D* \\ f \perp S_{i}^*}} \Frac{\sum_{\{x,y\} \in E(S)}(f_x - f_y)^2 w(x,y) + \sum_{(x,y) \in \partial S}(f_x - f_y)^2 w(x,y)} {\sum_{x \in V(S)} f_x^2}
+    \end{dmath*}
+    \begin{dmath*}
+        = \inf_{\substack{f\in D* \\ f \perp S_{i}^*}} \Frac{\sum_{\{x,y\} \in E(S)}(f_x - f_y)^2 w(x,y) + \sum_{x \in V(S)}\sum_{y \in \delta S}(f_x - f_y)^2 w(x,y)} {\sum_{x \in V(S)} f_x^2}
+    \end{dmath*}
+    \begin{dmath*}
+        = \inf_{\substack{f \in D* \\ f \perp S_{i}^*}} \Frac{\sum_{\{x,y\} \in E(S)}(f_x - f_y)^2 w(x,y) + \sum_{x \in V(S)}\sum_{y \in \delta S}f_x^2 w(x,y)} {\sum_{x \in V(S)} f_x^2}
+    \end{dmath*}
+    \begin{dmath*}
+        = \inf_{\substack{f \in D* \\ f \perp S_{i}^*}} \Frac{\sum_{\{x,y\} \in E(S)}(f_x - f_y)^2 w(x,y) + \sum_{x \in V(S)}f_x^2 W(x)} {\sum_{x \in V(S)} f_x^2}
+    \end{dmath*}
+  \end{dgroup*}
+  which are clearly the eigenvalues of $H$. Note that, above, the fourth step follows by explicitly imposing the Dirichlet condition.
+  
+  One can also derive an operator equation for $H$. Like above, both $L$ and $W$ can be viewed as linear operators on $\{f:S\cup \delta S \rightarrow \mathbb{R} \vert f(x\in\delta S) = 0\}$, where the action of $L$ is given by \cref{eqn:operator-equation} and the action of $W$ is simply
+  \[
+    Wf(y) = w(y,y)f(y) = \sum_{x \in \delta S} w(y,x)f(y).
+  \]
+  Combining these facts,
+  \begin{equation}\label{eqn:operator-dirichlet}
+    Hf(y) = \sum_{x \in V(S) \cup \delta S} (f(y)-f(x))w(y,x).
+  \end{equation}
+  
+  \subsection{Dirichlet gap}
+    Because the Dirichlet eigenvalues are the eigenvalues that we are typically interested in, we look to also define a spectral gap. The obvious choice is
+    \begin{equation}\label{eqn:spectral-gap}
+        \gamma^{(D)} := \lambda_1^{(D)} - \lambda_0^{(D)}.
+    \end{equation}
+    
+    Since $\lambda_0^{(D)} > 0$ whenever the Dirichlet boundary is nonempty (see spectral interlacing), the spectral gap of the Dirichlet eigenvalues is more difficult to analyze than that of the host graph. Our goal in this section is to seek a functional definition for the spectral gap, like that of \cref{eqn:graph-eigenvalues}. We derive a theorem similar to Proposition 1.1 of \cite{Chung2000}.
+    
+    \begin{thm}\label{thm:dirichlet}
+    Suppose $u$ is the first Dirichlet eigenfunction corresponding to eigenvalue $\lambda_0^{(D)}$ of the induced subgraph $S$ of $G$. Let $\lambda_1^{(D)} > \lambda_0^{(D)}$ be the next-lowest non-trivial Dirichlet eigenvalue. Then, the spectral gap $\gamma^{(D)} = \lambda_1^{(D)} - \lambda_0^{(D)}$ is given by
+        \[
+            \gamma^{(D)} = \inf_{f \perp \mathbf{1}} \Frac{\sum_{\{x,y\} \in E(S)}(f_x -f_y)^2 w(x,y)u_x u_y}{\sum_{x \in V(S)}f_x^2 u_x^2}.
+        \]
+    \end{thm}
+    \begin{proof}
+        We begin by noting that $u$ is an eigenfunction of the appropriate operator $H$. Then, \cref{eqn:operator-dirichlet} yields
+        \begin{dgroup*}
+            \begin{dmath*}
+                \lambda_0^{(D)}u_y = H u_y
+            \end{dmath*}
+            
+            \begin{dmath*}
+                \; =\sum_{x \in V(S) \cup \delta S} (u_y-u_x)w(y,x)
+            \end{dmath*}
+        \end{dgroup*}
+            Thus, for an arbitrary function $f:S\cup\delta S \rightarrow \mathbb{R}$,
+        \begin{dgroup*}    
+            \begin{dmath*}
+                \lambda_0^{(D)}u^2_y f^2_y = \sum_{x \in V(S) \cup \delta S} (u_y-u_x)w_{yx}f^2_y u_y
+            \end{dmath*}
+            \begin{dmath*}
+                \lambda_0^{(D)} \sum_y u^2_yf^2_y = \sum_{y \in V(S)} \sum_{x \in V(S) \cup \delta S} w_{yx}(u_y-u_x)f^2_y u_y
+            \end{dmath*}
+            \begin{dmath*}
+                = \sum_{\{x,y\} \in \partial S}w_{yx} (u_y-u_x)(f^2_y u_y-f^2_x u_x)
+            \end{dmath*}
+            \begin{dmath*}
+                = \sum_{\{x,y\} \in \partial S}w_{yx} \left((f_yu_y-f_xu_x)^2 - (f^2_y u_x u_y + f^2_xu_xu_y - 2 f_xf_yu_xu_y )\right)
+            \end{dmath*}
+            \begin{dmath*}
+                = \sum_{\{x,y\} \in \partial S}w_{yx} \left(\left(f_yu_y-f_xu_x\right)^2 - \left(f_y-f_x\right)^2u_xu_y \right).
+            \end{dmath*}
+        \end{dgroup*}
+        Thus, 
+        \begin{dgroup*}    
+            \begin{dmath}\label{eqn:dirichlet-identity}
+                \Frac{\sum_{\{x,y\} \in \partial S}w(y,x) \left(f_yu_y-f_xu_x\right)^2}{\sum_y u^2_yf^2_y} = \Frac{\sum_{\{x,y\} \in \partial S} \left(f_y-f_x\right)^2u_xu_y w(x,y) }{\sum_y u^2_yf^2_y} + \lambda_0^{(D)}.
+            \end{dmath}
+        \end{dgroup*}
+        Now, examining \cref{eqn:dirichlet-eigenvalues},
+        \begin{dgroup*}
+            \begin{dmath*}
+             \lambda_1^{(D)} = \inf_{\substack{g\in D* \\ g \perp u}} \Frac{\sum_{\{x,y\} \in E(S)\cup \partial S}(g_x - g_y)^2 w(x,y)} {\sum_{x} g_x^2} 
+            \end{dmath*}
+        \end{dgroup*}
+        we choose $g = f u$ and see that
+        \begin{dgroup*}
+            \begin{dmath*}
+             \lambda_1^{(D)} = \inf_{\substack{f\in D* \\ f \perp u^2}} \Frac{\sum_{\{x,y\} \in E(S)\cup \partial S}(f_x u_x - f_y u_y)^2 w(x,y)} {\sum_{x} f_x^2} .
+            \end{dmath*}
+            \begin{dmath*}
+             = \inf_{\substack{f\in D* \\ f \perp u^2}} \Frac{\sum_{\{x,y\} \in \partial S}w(y,x) \left(f_yu_y-f_xu_x\right)^2}{\sum_y u^2_yf^2_y} 
+            \end{dmath*}
+            \begin{dmath*} 
+             = \inf_{\substack{f\in D* \\ f \perp u^2}} \Frac{\sum_{\{x,y\} \in \partial S} \left(f_y-f_x\right)^2w(x,y) u_xu_y  }{\sum_y u^2_yf^2_y} + \lambda_0^{(D)}.
+            \end{dmath*}
+        \end{dgroup*}
+        Thus, we finally arrive at
+        \begin{dgroup*}
+            \begin{dmath*}
+            \gamma^{(D)} = \inf_{\substack{f\in D* \\ f \perp u^2}} \Frac{\sum_{\{x,y\} \in \partial S} \left(f_y-f_x\right)^2w(x,y) u_xu_y  }{\sum_y u^2_yf^2_y}.
+            \end{dmath*}
+        \end{dgroup*}
+        
+    \end{proof}
+
+\section{Cheeger Inequalities}
+  Isoperimetric inequalities bound the volume of a region of a graph by the surface area of that region. Roughly speaking, the ratio of surface area to volume is bounded by a constant, known as an isoperimetric constant. The simplest and perhaps most commonly used isoperimetric inequality is known as a Cheeger inequality, which relates this ratio to an isoperimetric constant known as the Cheeger constant. In the context of Markov chains, this constant is often referred to as the conductance.
+
+  The utility of Cheeger inequalities is most easily seen by first deriving the Cheeger upper bound. Our approach follows \cite{Chung}. First, we define the Cheeger constant for a subset $A$ of $V(S)$. Let $\overline{A} = V(S) \setminus A$. Then, define
+  \[
+    h_S(A) = \frac{\sum_{\substack{x \in A \\ y \in \overline{A}}}w(x,y)u_x u_y}{\min(\vol(A),\vol(\overline{A}))}
+  \]
+  where $\vol(A) = \sum_{x \in A} u_x^2$.
+  
+  
+  Now, we wish to minimize different ``cuts''. We hence arrive at the Cheeger constant \textit{of the subgraph} $S$
+  \begin{equation}
+      h_S = \min_A h_S(A).
+  \end{equation}
+  This constant provides a simple upper bound to the spectral gap $\gamma^{(D)}$.
+  
+  \begin{thm}\label{thm:cheeger-upper}
+    \[
+        \gamma^{(D)} \leq 2 h_S
+    \]
+  \end{thm}
+  \begin{proof}
+  Consider the $A$ that actually achieves this minimum. We wish to maximize contributions from the cut itself, while minimizing contributions from either side internal to the cut. To do so, we choose a step function, orthogonal to $u^2$, that changes sign at the cut itself. (The sign change at the cut insures that $(f_x-f_y)^2 \geq f_x^2 + f_y^2$.)
+  
+  
+  \[
+      f(y) = 
+      \begin{cases}
+        \frac{1}{\vol(A)} & \text{$y \in A$} \\
+        -\frac{1}{\vol(\overline{A})} & \text{$y \in \overline{A}$}
+      \end{cases}
+  \]
+  Now, by \Cref{thm:dirichlet},
+  
+  \begin{dgroup*}
+    \begin{dmath*}
+      \gamma^{(D)} \leq \Frac{\sum_{\{x,y\} \in E(S)}(f_x -f_y)^2 w(x,y)u_x u_y}{\sum_{x \in V(S)}f_x^2 u_x^2}.
+    \end{dmath*}
+    \begin{dmath*}
+      = \Frac{\sum_{\substack{x \in A \\ y \in \overline{A}}}(\frac{1}{\vol(A)} +\frac{1}{\vol(\overline{A})})^2 w(x,y)u_x u_y}{\frac{1}{\vol(A)} + \frac{1}{\vol(\overline{A})}}.
+    \end{dmath*}
+    \begin{dmath*}
+      = \sum_{\substack{x \in A \\ y \in \overline{A}}}(\frac{1}{\vol(A)} +\frac{1}{\vol(\overline{A})}) w(x,y)u_x u_y
+    \end{dmath*}
+    \begin{dmath*}
+      \leq \frac{2}{\min(\vol(A),\vol(\overline{A}))} \sum_{\substack{x \in A \\ y \in \overline{A}}}w(x,y)u_x u_y.
+    \end{dmath*}
+    \begin{dmath*}
+      = 2 h_S
+    \end{dmath*}
+  \end{dgroup*}
+  \end{proof}
+  
+  We now wish to derive a Cheeger lower bound. Before we start, it helps to derive a relationship similar to \cref{eqn:operator-dirichlet}, except for $\gamma^{(D)}$.
+  
+  \begin{lem}\label{lem:gap-operator}
+  Suppose $v$ and $u$ be the Dirichlet eigenfunctions corresponding to eigenvalues $\lambda_1^{(D)}$ and $\lambda_0^{(D)}$. Let $f=v/u$ and $\gamma^{(D)} = \lambda_1^{(D)} -\lambda_0^{(D)}$. Then, 
+  
+    \[
+        \gamma^{(D)}f_y u_y^2 = \sum_{x \in V(S) \cup \delta S}w(y,x) \left(f_y -f_x \right)u_x u_y.
+    \]
+  \end{lem}
+  \begin{proof}
+    Let $v$ and $u$ represent the Dirichlet eigenfunctions corresponding to eigenvalues $\lambda_1^{(D)}$ and $\lambda_0^{(D)}$ respectively. Then, by \cref{eqn:operator-dirichlet}
+    \begin{dgroup*}
+        \begin{dmath*}
+          \lambda_1^{(D)}v_y = \sum_{x \in V(S) \cup \delta S} (v_y -v_x) w(y,x)
+        \end{dmath*}
+        \begin{dmath*}
+          \lambda_1^{(D)}v_y u_y = \sum_{x \in V(S) \cup \delta S} (v_y -v_x) u_y w(y,x).
+        \end{dmath*}
+    \end{dgroup*}
+    Similarly,
+    \begin{dgroup*}
+        \begin{dmath*}
+            \lambda_0^{(D)}v_y u_y = \sum_{x \in V(S) \cup \delta S} (u_y -u_x) v_y w(y,x).
+        \end{dmath*}
+    \end{dgroup*}
+    Combining these,
+    \begin{dgroup*}
+        \begin{dmath*}
+            \gamma^{(D)} v_y u_y = 
+                \sum_{x \in V(S) \cup \delta S} (v_y -v_x) u_y w(y,x)
+                - \sum_{x \in V(S) \cup \delta S} (u_y -u_x) v_y w(y,x)
+        \end{dmath*}
+        \begin{dmath*}
+            = \sum_{x \in V(S) \cup \delta S}w(y,x) \left((v_y -v_x) u_y - (u_y -u_x) v_y \right)
+        \end{dmath*}
+        \begin{dmath*}
+            = \sum_{x \in V(S) \cup \delta S}w(y,x) \left(u_x v_y -v_x u_y \right).
+        \end{dmath*}
+    \end{dgroup*}
+    Now, substituting $f = v/u$
+    \begin{dgroup*}
+        \begin{dmath*}
+            \gamma^{(D)} f_y u_y^2
+            = \sum_{x \in V(S) \cup \delta S}w(y,x) \left(u_x u_y f_y -f_x u_x u_y \right).
+        \end{dmath*}
+        \begin{dmath*}
+            = \sum_{x \in V(S) \cup \delta S}w(y,x) \left(f_y -f_x \right)u_x u_y.
+        \end{dmath*}
+    \end{dgroup*}
+  \end{proof}
+  
+  \begin{remark}
+    Note that one can also derive the above expression through variational considerations of the \Cref{thm:dirichlet}. This approach is used by Chung in \cite{Chung}. Alternatively, one might also derive this expression by considering rates of heat diffusion. This method will be explored in Chapter ________ .
+  \end{remark}
+  
+  \begin{thm}
+    Cheeger lower bound.
+  \end{thm}
+  \begin{proof}
+    We begin by recalling \Cref{lem:gap-operator},
+    \begin{dgroup*}
+        \begin{dmath*}
+            \gamma^{(D)}f_y u_y^2 = \sum_{x \in V(S) \cup \delta S}w(y,x) \left(f_y -f_x \right)u_x u_y
+        \end{dmath*}
+        \begin{dmath*}
+            \gamma^{(D)} \sum_{f_y >0} f_y^2 u_y^2 = \sum_{f_y >0} \sum_{x \in V(S) \cup \delta S}w(y,x) \left(f_y -f_x \right)f_y u_x u_y
+        \end{dmath*}
+    \end{dgroup*}
+    
+    Now, we introduce the function 
+    \[
+        g(y) = \begin{cases}
+            f(y) & \text{if $f(y) >0$} \\
+            0   & \text{otherwise}.
+        \end{cases}
+    \]
+    Hence, we arrive at,
+    \begin{dgroup*}
+        \begin{dmath*}
+            \gamma^{(D)} \sum_{y} g_y^2 u_y^2 \geq \sum_{y} \sum_{x \in V(S) \cup \delta S}w(y,x) \left(g_y - g_x \right) g_y u_x u_y.
+        \end{dmath*}
+    \end{dgroup*}
+    We then rearrange this expression to obtain an inequality explicitly for the gap.
+    \begin{dgroup*}
+        \begin{dmath*}
+            \gamma^{(D)} \geq \Frac{\sum_{y} \sum_{x \in V(S) \cup \delta S}w(y,x) \left(g_y - g_x \right) g_y u_x u_y}{\sum_{y} g_y^2 u_y^2}
+        \end{dmath*}
+        \begin{dmath*}
+            \geq \Frac{\sum_{\{y,x\} \in E(S)}w(y,x) \left(g_y - g_x \right)^2 u_x u_y}{\sum_{y} g_y^2 u_y^2}
+        \end{dmath*}
+        \begin{dmath*}
+            = \Phi
+        \end{dmath*}
+    \end{dgroup*}
+    
+    Now,
+    \begin{dgroup*}
+        \begin{dmath*}
+            \Phi = \Frac{\sum_{\{y,x\} \in E(S)}w(y,x) \left(g_y - g_x \right)^2 u_x u_y}{\sum_{y} g_y^2 u_y^2}\cdot \Frac{\sum_{\{y,x\} \in E(S)} \left(g_y + g_x \right)^2 u_x u_y w(y,x)}{\sum_{\{y,x\} \in E(S)} (g_y+g_x)^2 u_y u_x w(y,x)}
+        \end{dmath*}
+        \begin{dmath*}
+            \geq \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\sum_{y} g_y^2 u_y^2\left(\sum_{\{y,x\} \in E} (g_y+g_x)^2 u_y u_x w(y,x)\right)}
+        \end{dmath*}
+        \begin{dmath*}
+            = \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\sum_{y} g_y^2 u_y^2\left(\sum_{\{y,x\} \in E} \left(2g_y^2+2g_x^2-(g_y-g_x)^2\right) u_y u_x w(y,x)\right)}
+        \end{dmath*}
+        \begin{dmath*}
+            = \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\sum_{y} g_y^2 u_y^2\left(2\sum_{y}g_y^2 u_y \sum_x u_x w(y,x) -\sum_{\{y,x\} \in E} \left((g_y-g_x)^2\right) u_y u_x w(y,x)\right)}
+        \end{dmath*}
+    \end{dgroup*}
+    where the inequality follows directly from Cauchy-Schwarz. Next, for the denominator, we recall \cref{eqn:operator-dirichlet},
+    \begin{dgroup*}
+        \begin{dmath*}
+            \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\sum_{y} g_y^2 u_y^2\left(2\sum_{y}g_y^2 u_y\left (\sum_x w(y,x) -\lambda_0^{(D)}\right) u_y -\sum_{\{y,x\} \in E} \left((g_y-g_x)^2\right) u_y u_x w(y,x)\right)}
+        \end{dmath*}
+        \begin{dmath*}
+            = \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\sum_{y} g_y^2 u_y^2\left(2\sum_{y}g_y^2u_y^2\left (\sum_x w(y,x) -\lambda_0^{(D)}\right) -\sum_{\{y,x\} \in E} (g_y-g_x)^2 u_y u_x w(y,x)\right)}
+        \end{dmath*}
+        \begin{dmath*}
+            = \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\left(\sum_{y} g_y^2 u_y^2\right)^2\left( 2\frac{\sum_{y}g_y^2u_y^2\sum_x w(y,x)}{\sum_{y} g_y^2 u_y^2} - 2 \lambda_0^{(D)} - \Phi \right)}
+        \end{dmath*}
+        \begin{dmath*}
+            = \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\left(\sum_{y} g_y^2 u_y^2\right)^2\left( 2\frac{\sum_{y}g_y^2u_y^2\left(d_y + W(y)\right)}{\sum_{y} g_y^2 u_y^2} - 2 \lambda_0^{(D)} - \Phi \right)}
+        \end{dmath*}
+        \begin{dmath*}
+            \geq \Frac{\left(\sum_{y}\left(\min_{x\sim y} \lvert g_y^2 - g_x^2 \rvert \right) \sum_{x} u_x u_y w(y,x) \right)^2}{\left(\sum_{y} g_y^2 u_y^2\right)^2\left( 2\frac{\sum_{y}g_y^2u_y^2\left(d_y + W(y)\right)}{\sum_{y} g_y^2 u_y^2} - 2 \lambda_0^{(D)} - \Phi \right)}
+        \end{dmath*}
+        \begin{dmath*}
+            \geq \Frac{\left(\sum_{y}\left(\min_{x\sim y} \lvert g_y^2 - g_x^2 \rvert \right) h_S \sum_{x\in +} u_x^2 \right)^2}{\left(\sum_{y} g_y^2 u_y^2\right)^2\left( 2\frac{\sum_{y}g_y^2u_y^2\left(d_y + W(y)\right)}{\sum_{y} g_y^2 u_y^2} - 2 \lambda_0^{(D)} - \Phi \right)}
+        \end{dmath*}
+        \begin{dmath*}
+            \geq \Frac{h_S^2}{2 \langle D + W \rangle_v - 2\lambda_0 - \Phi}
+        \end{dmath*}
+        \begin{dmath*}
+            = \Frac{h_S^2}{2\lambda_1 + \langle A \rangle_v - 2\lambda_0 - \Phi}
+        \end{dmath*}
+        \begin{dmath*}
+            = \Frac{h_S^2}{2\gamma^{(D)} + \langle A \rangle_v - \Phi}
+        \end{dmath*}
+    \end{dgroup*}
+  \end{proof}
+  
+%\end{document}

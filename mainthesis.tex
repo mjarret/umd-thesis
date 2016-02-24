@@ -12,13 +12,29 @@
 %             Version from June 2015                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass[letterpaper,12pt]{umd-thesis}  %12pt is larger than 11pt
-      
-\usepackage{lipsum}
-\usepackage{hyperref,xcolor}					% This adds hyperlinks and allows you to choose the colors simply
-	\hypersetup{linktocpage, linkbordercolor=blue}					% This adds hyperlinks to the TOC
-\usepackage[numbers,sort&compress]{natbib}	% This is probably the most elegant citation package for the dissertation, but others can be used.
-\usepackage{cleveref}						% Cleveref package is helpful for references to equations/etc
+\documentclass[letterpaper,12pt]{umd-thesis}  
+\usepackage{mathptmx} % This is a close match to Times New Roman, which is recommended by the grad school
+
+\usepackage{hyperref,xcolor} % This adds hyperlinks and allows you to choose the colors simply
+\usepackage{graphicx,epstopdf}			
+\graphicspath{{graphics/}} % This creates a graphics directory located at ./graphics
+\usepackage{amsmath,amsthm,amsfonts,amssymb,mathrsfs,dsfont,breqn} % These are math packages
+\usepackage{cleveref}  % Cleveref MUST come after ams packages if AMS packages are used.
+\usepackage[numbers,sort&compress]{natbib}							% This is probably the most elegant citation package for the dissertation, but 																				others can be used.
+
+%\includeonly{introduction,spectral-theory,optimization,1dgap,mocbound}
+
+% These are my own custom latex commands, you uncomment if unwanted
+\input{custom_commands.tex}
+
+% Custom formatting options
+\hypersetup{linktocpage, linkbordercolor=blue}  % Blue outlined hyperlinks in TOC
+
+\numberwithin{equation}{chapter}  % This changes the numbering style to chapter.equation 
+\numberwithin{thm}{chapter}
+\numberwithin{lem}{chapter}
+\numberwithin{cor}{chapter}
+\numberwithin{definition}{chapter}
 
 \bibliographystyle{plain}
 
@@ -33,8 +49,8 @@
 % Add any additional committee members in alphabetical order below. Each accepts the format:
 % \reader{Name}[Department][Institution]. They will not be automatically ordered, so they must be
 % entered alphabetically. Currently, Department and Institution aren't implemented.
-\secondreader{Professor Jeffrey Bub}[Department of Philosophy]
-\thirdreader{Professor Jay Deep Sau}
+\secondreader{Professor Jay Deep Sau}
+\thirdreader{Professor Jeffrey Bub}[Department of Philosophy]
 %\fourthreader{Reader Four}
 %\fifthreader{Reader Five}
 %\sixthreader{Reader Six}
@@ -55,59 +71,52 @@
 % Type the abstract below
 \begin{abstract}
     \lipsum[1]
-    \lipsum[2]
-    \lipsum[3]
+%    \lipsum[2]
+%    \lipsum[3]
 \end{abstract} 
 
 % This is the frontmater and can include the preface, foreword, dedication, and acknowledgements. Any
 % of these can be commented out if unwanted.
 \begin{preliminary}
 
-	\begin{preface}
-		\lipsum[4]
-	\end{preface}
+%	\begin{preface}
+%		\lipsum[4]
+%	\end{preface}
 	
-	\begin{foreword}
-		\lipsum[5]
-	\end{foreword}
+%	\begin{foreword}
+%		\lipsum[5]
+%	\end{foreword}
 
 	\begin{dedication}
 		To the ignorance of youth, without which this never would have happened.
 	\end{dedication}
 
 	\begin{acknowledgements}
-		\lipsum[6]
+		It is nearly impossible to thank everyone that had a hand in my successful completion of this dissertation. Some of the people mentioned below are likely to not remember their relevance towards my progress, however their impact was substantial and will not be forgotten.
+		
+		This work would have been impossible without funding from Booz Allen Hamilton, The University of Maryland Department of Physics, Joint Quantum Institute (JQI), and Joint Center for Quantum Information and Computer Science (QuICS). I would like to thank each of them for their support. 
+		
+		First and foremost, I would like to thank my advisor Stephen P. Jordan. Stephen has been a wonderful mentor, collaborator, and friend, and I am quite proud of the work we have done together. I would also like to thank Jeffrey Bub, both for always providing much needed direction and advice. My path throughout graduate school has been far from traditional, and I ultimately found my way due to a path of advice and introductions that came from Diane O'Leary, Konstantina Trivisa, Eileen Zagone. Without these people, I surely would never have gotten to where I am.
+		
+		I would also like to thank the close friends who were with me through this period of my life. Above all else, I owe special thanks to Prabal Adhikari, my earliest and closest friend from the University of Maryland. Also always there to help me were Prabin Adhikari and Clare Scott. 
+		
+		My family: my mother, stepfather, and Uncle. (Uncle being capitalized because, in his case, it is a proper noun.) This dissertation should really be dedicated to them, however I would never let sentimentality inhibit humor. Last, I would like to thank my dog Matoskah (`Matty'), who constantly reminds me that there are more important things than work, such as throwing the ball.
 	\end{acknowledgements}
 % if you need a "List of Symbols or Abbreviations" look into
 % gatech-thesis-gloss.sty.
 \end{preliminary}
 
-\chapter{Introduction}
-	\section{In the beginning, there was one.}
-	\lipsum[7] 
-	
-	Something that gets cited \cite{Ashbaugh1990}.
-	\section{Another section}
-	\lipsum[8]
-	
-\chapter{Preliminaries}
-	\lipsum[9]
-	\section{Bla}
-	\lipsum[10]
-	\subsection{blabla}
-	\lipsum[11]
+\include{chapters/introduction}
 
-\appendix
-\chapter{Test}
-	\section{Testing}
-	 \lipsum[5]
-	 	\begin{equation}
-	 		-1 = e^{i \pi}
-	 	\end{equation}
-	 	
-	 \lipsum[10]
-\chapter{Test 2}
-	\lipsum[1]
+\include{chapters/spectral-theory}
+
+\include{chapters/optimization}
+
+\include{chapters/1dgap}
+
+\include{chapters/mocbound}
+
+\include{chapters/appendices}
 
 \bibliography{library.bib}
 

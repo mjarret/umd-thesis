@@ -1,0 +1,46 @@
+\usepackage{lipsum} % This is for testing.
+\usepackage{stmaryrd}
+\usepackage{thmtools}
+\usepackage{thm-restate}
+\usepackage{bbm}
+
+\makeatletter  % Allow the use of @ in command names
+\long\def\@makecaption#1#2{%
+  \vskip\abovecaptionskip
+  \sbox\@tempboxa{{\captionfonts #1: #2}}%
+  \ifdim \wd\@tempboxa >\hsize
+    {\captionfonts #1: #2\par}
+  \else
+    \hbox to\hsize{\hfil\box\@tempboxa\hfil}%
+  \fi
+  \vskip\belowcaptionskip}
+\makeatother   % Cancel the effect of \makeatletter
+
+\newcommand{\Frac}[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+\newcommand{\vol}{\text{vol}}
+\newcommand{\expected}[1]{\left \langle #1 \right \rangle}
+
+
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}{Lemma}
+\newtheorem{cor}{Corollary}
+\newtheorem*{remark}{Remark}
+\newtheorem{definition}{Definition}
+\crefname{lem}{lemma}{lemmas}
+\Crefname{lem}{Lemma}{Lemmas}
+\crefname{thm}{theorem}{theorems}
+\Crefname{thm}{Theorem}{Theorems}
+
+
+\newcommand{\braket}[2]{\langle #1|#2\rangle}
+\newcommand{\bra}[1]{\langle #1|}
+\newcommand{\ket}[1]{|#1\rangle}
+\newcommand{\Bra}[1]{\left<#1\right|}%for big ones
+\newcommand{\Ket}[1]{\left|#1\right>}%for big ones
+\newcommand{\Braket}[2]{\left< #1 \right| #2 \right>}
+\renewcommand{\th}{^\mathrm{th}}
+\newcommand{\tr}{\mathrm{Tr}}
+\newcommand{\id}{\mathds{1}}
+% Different font in captions
+\newcommand{\captionfonts}{\small}
+

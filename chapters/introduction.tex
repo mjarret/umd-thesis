@@ -1,0 +1,153 @@
+\chapter{Introduction}
+
+In this chapter we introduce the basics of adiabatic theory. We will largely focus on the adiabatic model of quantum computing, sub-stochastic processes, and heat diffusion. Certain information about all three of these processes, a particular form of equilibration, can be addressed through an analysis of the spectral gap of some operator. In \Cref{sec:adiabatic-optimization}, we will introduce the model of quantum adiabatic optimization and recall certain well-known theorems about adiabaticity. In \Cref{sec:heat-diffusion}, we will introduce heat diffusion, its relationship to adiabatic optimization, and estimates on the equilibration time of a heat-diffusion process. In \Cref{sec:sub-stochastic}, we will define a sub-stochastic process and prove estimates on their equilibration time by relating them back to heat diffusion. 
+
+
+\section{Adiabatic Optimization}\label{sec:adiabatic-optimization}
+
+In adiabatic optimization, we assume that we are given a Hamiltonian $H(T)$ with a ground state $u(T)$ that encodes the solution to some optimization problem of interest. Our strategy is to prepare a known ground-state $u(0)$ of some other Hamiltonian $H(0)$ and slowly adjust $H$ from $H(0)$ into $H(T)$ according to some continuous path $H(t)$. The probability of success of this strategy, then, is governed by the adiabatic theorem. 
+
+\begin{thm}\label{thm:adiabatic}
+    The adiabatic theorem.
+\end{thm}
+
+
+\section{Heat Diffusion}\label{sec:heat-diffusion}
+    Another process which depends on the spectral gap is heat diffusion. Suppose that $H > 0$ is a positive, semi-definite operator with spectrum $\lambda_0 < \lambda_1 \leq \dots \leq \lambda_n$. The heat diffusion process for $t \in [0,T]$ with initial distribution $f_0$ is then the initial-value problem
+    \begin{equation}\label{eqn:heat-diffusion}
+        \begin{cases}
+            f(0) = f_0 \\
+            \frac{d f}{d t} = - H f.
+        \end{cases}
+    \end{equation}
+    
+    If we assume that the eigenfunction corresponding to $\lambda_i$ is $u_i$, then \cref{eqn:heat-diffusion} has the general solution
+    
+    \begin{equation}\label{eqn:heat-sol}
+        f(t) = \sum_i C_i u_i e^{-\lambda_i t}
+    \end{equation}
+    where the constants $C_i$ are uniquely determined by 
+    \[
+        C_i = \frac{f(0).u_i}{u_i^2}.
+    \]
+    
+    Now, we wish to examine the rate at which $f$ approaches something proportional to the lowest eigenfunction $u_0$, which we assume is everywhere nonzero. In particular, we consider componentwise ratios $g_i = u_i/(C_0 u_0)$ and rewrite \cref{eqn:heat-sol} as
+    \begin{equation}\label{eqn:heat-sol2}
+        f(t) = C_0 u_0 e^{-\lambda_0 t} \sum_i \frac{C_i}{C_0} g_i e^{-(\lambda_i-\lambda_0) t}.
+    \end{equation}
+    Since all $g_i$ are bounded, we find that
+    \begin{dgroup*}
+        \begin{dmath*}
+            \frac{f(t)}{C_0 u_0 e^{-\lambda_0 t}}= 1 + \sum_{i>0} \frac{C_i}{C_0} g_i e^{-(\lambda_i-\lambda_0) t}
+        \end{dmath*}
+        \begin{dmath*}
+            \left\lVert \frac{f(t)}{C_0 u_0 e^{-\lambda_0 t}} - 1 \right\rVert = \left\lVert \sum_{i>0} \frac{C_i}{C_0} g_i e^{-(\lambda_i-\lambda_0) t} \right\rVert
+        \end{dmath*}
+        \begin{dmath*}
+            \leq \sum_{i>0} \left\lVert  \frac{C_i}{C_0} g_i e^{-(\lambda_i-\lambda_0) t} \right\rVert
+        \end{dmath*}
+        \begin{dmath*}
+            \leq \sum_{i>0} \left\lVert  \frac{C_i}{C_0} g_i \right\rVert e^{-\gamma t}
+        \end{dmath*}
+        \begin{dmath*}
+            \leq C e^{-\gamma t}
+        \end{dmath*}
+    \end{dgroup*}
+    for some absolute constant $C$. Hence, we see that deviations from the ground state are bounded as a function of the spectral gap $\gamma$.
+
+    In fact, because heat diffusion is equivalent to to Schr\"{o}dinger evolution by the Wick rotation $i \mapsto i t$, one might naturally think of the role of the gap as similar in both adiabatic optimization and heat diffusion.
+    
+\section{Sub-stochastic Processes}\label{sec:sub-stochastic}
+
+\section{The Rayleigh Quotient}
+  Important to our discussion throughout the subsequent chapters will be the Rayleigh quotient. In general, for a Hermitian operator $H$ and some nonzero function $u$
+  \[
+    \Frac{\expected{H}_u}{u^* u}
+  \]
+  is known as a Rayleigh quotient. If $H$ has eigenfunctions $\{u_i\}$, then its eigenvalues are given by
+  \[
+      \lambda_i = \Frac{\expected{H}_{u_i}}{u^* u}.
+  \]
+    It is easy to see, then, that the lowest eigenvalue $\lambda_0$ is given by
+  \[
+        \lambda_0 = \inf_{u \neq 0} \Frac{\expected{H}_u}{u^* u}
+  \]
+  since the Rayleigh quotient must always be greater than or equal to the lowest eigenvalue. If $H$ is nondegenerate, or has spectrum $\lambda_0 < \lambda_1 < \dots \lambda_n$, let $S_i$ be the space spanned by the $i$ lowest eigenvectors. Then, 
+  \begin{equation}\label{eqn:Rayleigh-eigenvalue}
+        \lambda_i = \inf_{\substack{u \perp S_i \\ u \neq 0}} \Frac{\expected{H}_u}{u^* u}.
+  \end{equation}
+  This particular form of the Rayleigh quotient will be the object we are most interested in what follows. By utilizing a more careful definition of $S_i$, we could accommodate degenerate spectra. Nonetheless, because we are never going to be interested in $i>1$ and we will always restrict ourselves to the case that $\lambda_1 -\lambda_0 > 0$, we hereafter assume that all operators discussed have nondegenerate spectra without loss of generality.  
+  
+\section{Minimal gap conservation}
+    \begin{restatable}{thm}{HellmanFeynman}
+      \label{thm:Hellman-Feynman}
+      Let $H(\alpha)$ be a Hermitian operator (matrix) dependent upon a parameter $\alpha$ with non-degenerate eigenvalue $\lambda(\alpha)$ and associated eigenfunction $u(\lambda;\alpha)$. Then
+    \[
+      \frac{d \lambda(\alpha)}{d \alpha}  = \sum_{i,j} u_i^*(\lambda;\alpha) \frac{d H(\alpha)_{ij}}{d \alpha} u_j(\lambda;\alpha) \equiv \expected{\frac{d H(\alpha)_{ij}}{d \alpha}}{u(\lambda;\alpha)}
+    \]
+    where $u_i(\lambda;\alpha)$ is the $i^{th}$ component of $\mathbf{u}(\lambda;\alpha)$. 
+    \end{restatable}
+    
+    It should be noted that the theorem is typically stated for a Hermitian operator $H(\alpha)$ with eigenvalues $\lambda_0 < \lambda_1 < \dots < \lambda_N$. Care must be taken in the application of this theorem when considering degenerate eigenvalues \cite{Vatsya2004,Zhang2004} which can sometimes occur. For instance, the ring graph with constant potential has degeneracies. Nonetheless, since the cases we consider in this dissertation are non-degenerate, we can use this theorem in its above-stated form.
+    
+    The Hellman-Feynman theorem will be utilized in ________ for proving ______. However, even in the context of adiabatic optimization, it has a non-trivial, somewhat surprising consequence.
+    
+    \begin{thm}\label{thm:gap-conservation}
+        Let $H(s) = (1-a(s))H_0 + a(s) H_1$ be a Hermitian operator with non-zero spectral gap $\gamma(s)$ and $a$ monotone-increasing and once differentiable for $s \in I$. Suppose that $\gamma(s)$ has a stationary point $s_0$ internal to $I$. Then, the two lowest eigenfunctions $u,v$ of $H(s_0)$ satisfy
+        \[
+            \gamma(s_0) = \expected{H(s)}_v - \expected{H(s)}_u
+        \]
+        for all $s$.
+    \end{thm}
+    
+    \begin{proof}
+        Let $\lambda_0(s) < \lambda_1(s)$ be the two lowest eigenvalues of $H(s)$ with corresponding eigenfunctions $u(s)$ and $v(s)$. With $s_0$ as stated above, we know that $\gamma(s_0) = \lambda_1(s_0) - \lambda_0(s_0)$. Furthermore, by \Cref{thm:Hellman-Feynman}, we have that
+        \begin{dgroup*}
+            \begin{dmath*}
+                \frac{d \gamma}{d s} = \expected{\frac{d H}{ds}}_{v(s)} - \expected{\frac{d H}{ds}}_{u(s)}
+            \end{dmath*}
+            \begin{dmath*}
+                = a'(s)\left(\expected{H_1 
+                - H_0 }_{v(s)} - \expected{H_1 
+                - H_0 }_{u(s)}\right).
+            \end{dmath*}
+        \end{dgroup*}
+        
+        We wish to evaluate the function at $s=s_0$, which because $a'(s) >0$ yields
+        \begin{dgroup*}
+            \begin{dmath*}
+                0 = \expected{H_1 - H_0}_{v(s_0)} - \expected{H_1 - H_0}_{u(s_0)}.
+            \end{dmath*}
+        \end{dgroup*}
+        
+        Now, consider $H(s)$,
+        \begin{dgroup*}
+            \begin{dmath*}
+                \expected{H(s)}_{v(s_0)} = \expected{H_0}_{v(s_0)} + a(s) \expected{\left(H_1 - H_0\right)}_{v(s_0)}
+            \end{dmath*}
+            \begin{dmath*}
+                = \expected{H_0}_{v(s_0)} + a(s) \expected{\left(H_1 - H_0\right)}_{u(s_0)}
+            \end{dmath*}
+            \begin{dmath*}
+                = \expected{H_0}_{v(s_0)} - \expected{H_0}_{u(s)} + \expected{H(s)}_{u(s_0)}.
+            \end{dmath*}
+        \end{dgroup*}
+        
+        Thus, we find that,
+        \begin{dgroup*}
+            \begin{dmath*}
+                \expected{H(s)}_{v(s_0)} -\expected{H(s)}_{u(s_0)} = \expected{H_0}_{v(s_0)} - \expected{H_0}_{u(s_0)}.
+            \end{dmath*}
+        \end{dgroup*}
+        
+        In other words, the quantity $\expected{H(s)}_{v(s_0)} -\expected{H(s)}_{u(s_0)}$ is independent of $s$. Because we know that $\gamma(s_0) = \expected{H(s_0)}_{v(s_0)} -\expected{H(s_0)}_{u(s_0)}$ and $\expected{H(s)}_{v(s_0)} -\expected{H(s)}_{u(s_0)}$ is independent of $s$, our proof is complete.
+    \end{proof}
+    
+    We have incidentally also proven the following:
+    \begin{cor}
+        Let $H,v,u,\gamma$ be defined as in \cref{thm:gap-conservation}. Then, if $\gamma(s)$ attains its minimum interior to $I$, 
+        \[
+            \gamma_\min = \expected{H(s)}_{v(s_0)} - \expected{H(s)}_{u(s_0)}
+        \]
+        is independent of $s$.
+    \end{cor}

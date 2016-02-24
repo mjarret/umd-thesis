@@ -1,0 +1,75 @@
+\appendix
+
+\chapter{A sufficient condition for some node of $\mathbf{u}(\mu)$ to separate adjacent nodes of $\mathbf{u}(\lambda)$}\label{app:Gantmakher}
+
+In this section we give proof of \Cref{thm:Gantmakher}. The following proof is adapted directly from Gantmakher and Kre\u{i}n\cite{gantmakher2002oscillation}, however we consider vectors $\mathbf{u}(\lambda)$ and $\mathbf{u}(\mu)$ which need not be eigenvectors of the same matrix. Rather, we require only that these vectors satisfy \cref{eqn:recurrence}.
+
+    \Gantmakher*
+
+    \begin{proof}
+      First, we consider the extension of vectors $\mathbf{u}(\mu;\alpha)$,$\mathbf{u}(\lambda;\beta)$. From \cref{eqn:recurrence}  we take $W_1 \mapsto W_1+1$ and, for $\mathbf{u}(\lambda;\beta)$ get
+      \begin{equation}\label{eqn:recurrence_node}
+      	\left(1+W_1 - \lambda\right)u_1(\lambda) = u_{2}(\lambda) + u_{0}(\lambda)
+      \end{equation}
+      and similarly for $\mathbf{u}(\mu;\alpha)$. Here, to maintain consistency between \cref{eqn:recurrence,eqn:recurrence_node} we require that in \cref{eqn:recurrence_node} $u_0=0$. Thus, $u_0$ is a node of $\mathbf{u}$. We similarly treat $u_{N+1}$ as a node. Further, since we have shifted $W_1,W_{N}$ by constants, \cref{eqn:theta} is unaltered. Hence, \cref{eqn:Casoratian} is unchanged and we can proceed with the proof.
+
+      Let $\eta \in [m-1,m)$ and $\xi \in (n,n+1]$ be successive nodes of $\mathbf{u}(\lambda;\beta)$ with $\eta < \xi$. Without loss of generality, we assume that $u_i(\lambda;\beta) > 0 \; \forall \; i \in \intset{m}{n}$. Then,
+
+      \begin{equation}\label{eqn:Appendix_conditional}
+	\begin{cases}
+	      (m-\eta)u_{m-1}(\lambda;\beta) + (\eta - m + 1)u_{m}(\lambda;\beta) &= 0 \\
+	      (n+1-\xi)u_n(\lambda;\beta) + (\xi-n)u_{n+1}(\lambda;\beta) &= 0
+	\end{cases}
+      \end{equation}
+
+      Now, again without loss of generality, we assume that $u_i(\mu;\alpha) > 0 \; \forall \; i \in \intset{m}{n}$. Hence, if $\mathbf{u}(\mu;\alpha)$ also has no nodes in $(m,n)$, we get that
+
+      \begin{equation}\label{eqn:Appendix_conditional2}
+	\begin{cases}
+	      (m-\eta)u_{m-1}(\mu;\alpha) + (\eta-m+1)u_{m}(\mu;\alpha) &\geq 0 \\
+	      (n+1-\xi)u_n(\mu;\alpha) + (\xi-n)u_{n+1}(\mu;\alpha) &\geq 0
+	\end{cases}
+      \end{equation}
+
+      Combining \cref{eqn:Appendix_conditional,eqn:Appendix_conditional2} yields the inequalities
+      \begin{align}
+	      \label{eqn:Appendix_inequalities1} w_{m-1}\big(\mathbf{u}(\mu;\beta),\mathbf{u}(\lambda;\alpha)\big) &\leq 0 \\
+	      \label{eqn:Appendix_inequalities2} w_{n}\big(\mathbf{u}(\mu;\beta),\mathbf{u}(\lambda;\alpha)\big) &\geq 0
+      \end{align}
+
+      Recall from \cref{eqn:Casoratian} that
+      \begin{equation}
+	      \Delta w_{i-1}\big(\mathbf{u}(\mu;\beta),\mathbf{u}(\lambda;\alpha)\big) = \Theta_{W,i}(\mu-\lambda;\beta,\alpha) u_{i}(\mu;\beta)u_i(\lambda;\alpha)
+      \end{equation}
+      where by summing both sides,
+      \begin{equation}\label{eq:Appendix_Casoratian}
+	      w_{n}\big(\mathbf{u}(\mu;\beta),\mathbf{u}(\lambda;\alpha)\big)-w_{m-1}\big(\mathbf{u}(\mu;\beta),\mathbf{u}(\lambda;\alpha)\big) = \sum_{i=m}^{n}\Theta_{W,i}(\mu-\lambda;\beta,\alpha) u_{i}(\mu;\beta)u_i(\lambda;\alpha)
+      \end{equation}
+      Thus, by \cref{eqn:Appendix_inequalities1,eqn:Appendix_inequalities2} we have that the left-hand side of \cref{eq:Appendix_Casoratian} is non-negative. Then, by our choice of $u_i(\lambda;\alpha),u_i(\mu;\beta)>0 \; \forall \; i \in \intset{m}{n}$, we see that if $\Theta_{W,i}(\mu-\lambda;\beta,\alpha) \leq 0 \; \forall \; i \in \intset{m}{n}$ with at least some $i\in \intset{m}{n}$ such that $\Theta_{W,i}(\mu-\lambda;\beta,\alpha) < 0$ we arrive at a contradiction.
+    \end{proof}
+
+\chapter{For $\mathbf{H}_{\alpha U}(\mathbb{P}_N)$, the node of $\mathbf{u}(\lambda_2)$ shifts left with increasing $\alpha$.}\label{app:Sturm-Picone}
+
+\begin{thm}
+	Let $\mathbf{H}_{\alpha U}(\mathbb{P}_N)$ be defined as in \Cref{lem:node_left}. Then, the node of $\mathbf{u}(\lambda_2)$ shifts left with increasing $\alpha$.
+\end{thm}
+\begin{proof}
+	The proof proceeds in analogy to \Cref{lem:node_left}. First, note that by \Cref{cor:ordering},
+	\begin{equation}
+		\left\langle \mathbf{U} \right\rangle_{\mathbf{u}(\lambda_2)} \geq m-1
+	\end{equation}
+	where $m$ corresponds to the generalized zero of $\mathbf{u}(\lambda_2)$. Then, like \cref{eq:node_theta}
+	\begin{align}
+		U_{m} - \left\langle \mathbf{U} \right\rangle_{\mathbf{u}(\lambda_2)} &= (m-1) - \left\langle \mathbf{U} \right\rangle_{\mathbf{u}(\lambda_2)} \leq 0.
+	\end{align}
+	Note that because $\mathbf{u}(\lambda_2)$ has at least one positive and one negative term, the inequality is strict when $m=1$. If $m>1$,
+	\begin{equation}
+		U_{m-1} - \left\langle \mathbf{\lambda_2} \right\rangle_{\mathbf{u}(\lambda_2)} < 0.
+	\end{equation}
+	Thus, by \cref{eq:theta_vary}
+	\begin{equation}
+	  \frac{d \Theta_{U,i}}{d\beta} <0 \; \; \; \text{$\forall i \in \intset{1}{m}$}.
+	\end{equation}
+	Hence, by the same logic as \Cref{lem:node_left}, \Cref{thm:Gantmakher} applies and the node always shifts left with increasing $\alpha$.
+\end{proof}
+
