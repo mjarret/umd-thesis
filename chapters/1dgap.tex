@@ -7,14 +7,14 @@
 \newcommand{\graph}[2]{\mathbb{#1}_{#2}}
 \newcommand{\intset}[2]{\left \llbracket #1 , #2 \right \rrbracket}
 
-\chapter{One dimensional fundamental gap theorem}
+\chapter{One dimensional fundamental gap theorem}\label{chap:fundamental_gap}
 
 \section{Introduction}
-  The Fundamental Gap Conjecture proposed a tight lower bound of $3\pi^2/D^2$ to the difference between the two lowest eigenvalues (the gap) of a Schr\"{o}dinger operator $-\nabla^2 + V(x)$ with convex potential $V$ on a compact convex domain $\Omega \subset \mathbb{R}^n$ of diameter $D$ and subject to Dirichlet boundary conditions. Recently, Andrews and Clutterbuck proved the conjecture for all ``semiconvex'' potentials (which include convex potentials as a special case) in arbitrary dimensions \cite{Andrews2011}. Although the community's focus has largely centered on the continuum\cite{Andrews2011, Lavine1994, ashbaugh1989optimal, Yu1986}, as early as 1990 Ashbaugh and Benguria saw the potential for extending their results to discrete Laplacians. In their work, they proved a lower bound to the gap for a particular class of discrete Laplacians with symmetric-decreasing potentials \cite{ashbaugh1990some}. Indeed, recent interest in adiabatic quantum computing justifies their vision and motivates our interest in lifting continuum results to graph Laplacians\cite{Farhi_science, FGG02}. While our interest is driven by quantum computation, the discrete eigenvalue gap is also of interest to condensed matter physicists. Abstractly, this result is a useful addition to spectral theory.
+  The Fundamental Gap Conjecture proposed a tight lower bound of $3\pi^2/D^2$ to the difference between the two lowest eigenvalues (the gap) of a Schr\"{o}dinger operator $-\nabla^2 + V(x)$ with convex potential $V$ on a compact convex domain $\Omega \subset \mathbb{R}^n$ of diameter $D$ and subject to Dirichlet boundary conditions. Recently, Andrews and Clutterbuck proved the conjecture for all ``semiconvex'' potentials (which include convex potentials as a special case) in arbitrary dimensions \cite{Andrews2011}. Although the community's focus has largely centered on the continuum\cite{Andrews2011, Lavine1994, ashbaugh1989optimal, Yu1986}, as early as 1990 Ashbaugh and Benguria saw the potential for extending their results to discrete Laplacians. In their work, they proved a lower bound to the gap for a particular class of discrete Laplacians with symmetric-decreasing potentials \cite{ashbaugh1990some}. Indeed, recent interest in adiabatic quantum computing justifies their vision and motivates our interest in lifting continuum results to graph Laplacians\cite{Farhi_science, FGG02}.
 
-  Previously, in the setting of quantum computation, gap bounds were derived on an as-needed basis. For instance, in an analysis of the power of adiabatic algorithms, van Dam et al. bounded eigenvalue gaps in the minimum Hamming weight problem by considering an explicit gap and then bounding the maximum error on this gap from perturbations\cite{DMV01}. In another instance, Reichardt considers the eigenvalue gap for an Ising system by using properties of the operator's principal submatrices\cite{R04}. (At least in the case of the path graph, Reichardt's Sturm sequences are similar in form to our eigenvector recurrence of \cref{eqn:recurrence}. For an explicit examination of the link between principal submatrices and the eigenvector recurrences, see Gantmakher and Kre\u{i}n\cite{gantmakher2002oscillation}.) Unlike the constructions above, we look to develop tools of increasingly general applicability. Thus, we begin with systems where gaps are demonstrably ``large'' and search for extensions of these systems to problems of algorithmic and physical interest.
-
-  In this work, we consider specifically Schr\"{o}dinger operators corresponding to graph Laplacians with suitably defined convex potential terms. Here, the potential is restricted to the vertices and can be seen either as a site-dependent physical potential (as in the physics literature) or as a weighted graph with loops (as in the mathematical and computer science literature). Thus, for a graph $\mathbb{G}=(V,E)$ with graph Laplacian $\mathbf{L(\mathbb{G})}$ and subjected to a potential $W(\cdot)$ we consider Schr\"{o}dinger operators of the form
+  Previously to the approach below first found in \cite{Jarret2014c}, in the setting of quantum computation, gap bounds were derived on an as-needed basis. For instance, in an analysis of the power of adiabatic algorithms, van Dam et al. bounded eigenvalue gaps in the minimum Hamming weight problem by considering an explicit gap and then bounding the maximum error on this gap from perturbations\cite{DMV01}. In another instance, Reichardt considers the eigenvalue gap for an Ising system by using properties of the operator's principal submatrices\cite{R04}. (At least in the case of the path graph, Reichardt's Sturm sequences are similar in form to our eigenvector recurrence of \cref{eqn:recurrence}. For an explicit examination of the link between principal submatrices and the eigenvector recurrences, see Gantmakher and Kre\u{i}n\cite{gantmakher2002oscillation}.) Unlike the constructions above, this chapter develops a tight bound, general bound. 
+  
+  In this chapter, we consider specifically Schr\"{o}dinger operators corresponding to graph Laplacians with suitably defined convex potential terms. Here, the potential is restricted to the vertices and can be seen either as a site-dependent physical potential (as in the physics literature) or as a weighted graph with loops (as in the mathematical and computer science literature). Thus, for a graph $\mathbb{G}=(V,E)$ with graph Laplacian $\mathbf{L(\mathbb{G})}$ and subjected to a potential $W(\cdot)$ we consider Schr\"{o}dinger operators of the form
   \begin{equation}
     \mathbf{H}_{W}(\mathbb{G}) = \mathbf{L(\mathbb{G})} + \mathbf{W}
   \end{equation}
@@ -23,7 +23,7 @@
     \big[\mathbf{W}(V)\big]_{ij} = W(V_i) \delta_{ij}.
   \end{equation}
 %redefine above.
-  Although our problem is analogous to the Fundamental Gap Conjecture as proven in the continuum, lifting existing results to the discrete realm and maintaining tight bounds is non-trivial. Perhaps the most obvious challenge we face is the loss of well-defined boundary conditions and, for this reason, we restrict our initial study to the path and hypercube graphs. In the first case, our restriction gives boundary conditions similar to Neumann boundary conditions in the continuum and thus our result bears some resemblance to the continuum one of Payne and Weinberger \cite{Payne1960} and indeed converges upon this result asymptotically. (For the physicist, our path graph Hamiltonian can be viewed as a 1-dimensional chain with a nearest-neighbor interaction term and a convex, site-dependent potential term. See \Cref{fig:path}. Up to an identity term, the Laplacian of the hypercube graph of $2^N$ vertices,  $\mathbb{H}_{2^N}$, is equivalent to a sum of the Pauli $\sigma_x$ operators acting on each of $N$ qubits. In particular, transverse Ising models such as those studied in \cite{Farhi_science} can be cast as potentials on the hypercube. Here, like Reichardt\cite{R04} and van Dam et al. \cite{DMV01}, but unlike Farhi et al.\cite{Farhi_science}, we focus on the case that the potential depends only on the Hamming distance from a minimum. For the hypercube graph see \Cref{fig:path}.)
+  Although our problem is analogous to the Fundamental Gap Conjecture as proven in the continuum, lifting existing results to the discrete realm and maintaining tight bounds is non-trivial. Perhaps the most obvious challenge we face is the transition from well-understood boundary conditions to discrete boundary conditions and, for this reason, this chapter focuses on only the one dimensional case. In the first case, our restriction is identifiable with discrete Neumann boundary conditions and thus our result bears some resemblance to the continuum one of Payne and Weinberger \cite{Payne1960} and indeed converges upon this result asymptotically. (For the physicist, our path graph Hamiltonian can be viewed as a 1-dimensional chain with a nearest-neighbor interaction term and a convex, site-dependent potential term. See \Cref{fig:path}. Up to an identity term, the Laplacian of the hypercube graph of $2^N$ vertices,  $\mathbb{H}_{2^N}$, is equivalent to a sum of the Pauli $\sigma_x$ operators acting on each of $N$ qubits. In particular, transverse Ising models such as those studied in \cite{Farhi_science} can be cast as potentials on the hypercube. Here, like Reichardt\cite{R04} and van Dam et al. \cite{DMV01}, but unlike Farhi et al.\cite{Farhi_science}, we focus on the case that the potential depends only on the Hamming distance from a minimum. For the hypercube graph see \Cref{fig:path}.)
   
   \begin{figure}[htp]
     \includegraphics[width=0.78\textwidth]{graphs3.eps}
@@ -41,22 +41,7 @@
 
 \section{Preliminaries}\label{sec:prelim}
   \subsection{The graph Laplacian and its Eigenvalues}\label{sec:prelim_eigenvalues}
-    Let $\mathbb{G}=(V,E)$ be an undirected graph with vertex set $V$ and edge set $E\subseteq V \times V$. Then we associate with $\mathbb{G}$ a degree matrix $\mathbf{D}(\mathbb{G})$ and an adjacency matrix $\mathbf{A}(\mathbb{G})$ where
-    \begin{equation}
-      \big[\mathbf{D}(\mathbb{G})\big]_{ij} = d_i \delta_{ij}
-    \end{equation}
-    with $d_i$ the degree of vertex $V_i \in V$ and
-    \begin{equation}
-      \big[\mathbf{A}(\mathbb{G})\big]_{ij} = \begin{cases}
-						1 & \text{if $(V_i,V_j) \in E$} \\
-						0 & \text{otherwise}.
-					      \end{cases}
-    \end{equation}
-
-    One then defines the $\lvert V \rvert \times \lvert V \rvert$ graph Laplacian $\mathbf{L}(\mathbb{G})$ as the difference between the degree matrix and adjacency matrix. That is,
-    \begin{equation}
-      \mathbf{L}(\mathbb{G}) = \mathbf{D}(\mathbb{G}) - \mathbf{A}(\mathbb{G}).
-    \end{equation}
+    Let $\mathbb{G}=(V,E)$ be an undirected graph with vertex set $V$ and edge set $E\subseteq V \times V$. Then we associate with $\mathbb{G}$ a degree matrix $\mathbf{D}(\mathbb{G})$ and an adjacency matrix $\mathbf{A}(\mathbb{G})$.
 
     We now extend our attention to a more general class of Schr\"{o}dinger operators of the form
     \begin{equation}
@@ -66,18 +51,14 @@
     \begin{equation}
       \big[\mathbf{W}(V)\big]_{ij} \stackrel{\text{def}}{=} W(V_i) \delta_{ij}.
     \end{equation}
-    We can think of the resulting matrix as either the graph Laplacian for a weighted graph with loops or as a Schr\"{o}dinger operator (Hamiltonian) with an external potential. The eigenvalue spectrum of $\mathbf{H}_W(\mathbb{G})$ is $\lambda_1 \leq \lambda_2 \leq \dots \leq \lambda_{\size{V}}$ with associated, normalized eigenvectors $\mathbf{u}(\lambda_1),\mathbf{u}(\lambda_2),\dots,\mathbf{u}(\lambda_{\size{V}})$. Suppose now that we consider the one parameter family $\mathbf{H}_W(\mathbb{G};\alpha)$ with
+    We can think of the resulting matrix as either the Dirichlet graph Laplacian for some host graph or as a Schr\"{o}dinger operator (Hamiltonian) with an external potential. The eigenvalue spectrum of $\mathbf{H}_W(\mathbb{G})$ is $\lambda_1 \leq \lambda_2 \leq \dots \leq \lambda_{\size{V}}$ with associated, normalized eigenvectors $\mathbf{u}(\lambda_1),\mathbf{u}(\lambda_2),\dots,\mathbf{u}(\lambda_{\size{V}})$. Suppose now that we consider the one parameter family $\mathbf{H}_W(\mathbb{G};\alpha)$ with
     \begin{equation}
       \mathbf{H}_W(\mathbb{G}) = \mathbf{H}_W(\mathbb{G};\alpha) \Big\rvert_{\alpha=0}.
     \end{equation}
     If $\lambda_k$ is an eigenvalue of $\mathbf{H}_W(\mathbb{G};\alpha)$ with no degeneracy, the Hellman-Feynman theorem governs the relationship between $\lambda_k$ and $\alpha$. That is,
     \HellmanFeynman*
 
-    Our primary interest in this paper is the so-called Fundamental Gap,
-    \begin{equation}
-      \Gamma(\alpha) \stackrel{\text{def}}{=} \lambda_2(\alpha) - \lambda_1(\alpha)
-    \end{equation}
-    the difference between the two lowest eigenvalues of $\mathbf{H}_W(\mathbb{G};\alpha)$. Assuming that both $\lambda_1$ and $\lambda_2$ are non-degenerate eigenvalues, by \Cref{thm:Hellman-Feynman} we have that
+ Assuming that both $\lambda_1$ and $\lambda_2$ are non-degenerate eigenvalues, by \Cref{thm:Hellman-Feynman} we have that
     \begin{equation}\label{eqn:Hellman-Feynman}
       \frac{d \Gamma(\alpha)}{d \alpha} = \expected{\frac{d \mathbf{H}_W(\mathbb{G};\alpha)}{d \alpha}}{\mathbf{u}(\lambda_2)} - \; \expected{\frac{d \mathbf{H}_W(\mathbb{G};\alpha)}{d \alpha}}{\mathbf{u}(\lambda_1)}
     \end{equation}
@@ -614,6 +595,3 @@ Then, with a bit of work, \cref{eqn:recurrence_hyper_prior} becomes
     	\Gamma \geq 2
     \end{equation}
     within the Hamming-symmetric subspace.
-
-    \section{Acknowledgements}
-    This work was supported in part by the joint center for Quantum Information and Computer Science (QuICS), a collaboration between the University of Maryland Institute for Advanced Computer Studies (UMIACS) and the NIST Information Technology Laboratory (ITL). Portions of this paper are a contribution of NIST, an agency of the US government and are not subject to US copyright.

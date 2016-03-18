@@ -82,7 +82,7 @@
   \]
   
 
-\section{Dirichlet Eigenvalues}
+\section{Dirichlet Eigenvalues}\label{sec:dirichlet_1}
   To fully utilize the graph formalism, we consider a subgraph $S$ of a graph $G$. Let $V(S) \subseteq V$ be the vertices of $S$ and $E(S) \subseteq E$ be the edges of $S$. We write $\partial S = \{ (x,y) \in E \; \vert \; x \in V(S), y \notin V(S) \}$ and $\delta S = \{ x \in V \setminus V(S) \; \vert \; (x,y) \in \partial S \text{ for some } y \in V \}$. In other words, $\partial S$ is the set of all edges of $G$ with only one end in $S$. Then, $\delta S$ is the set of all vertices in $G \setminus S$ that are connected by an edge to some vertex in $S$.
   
   Now, consider functions $f: S \cup \delta S \rightarrow \mathbb{R}^{+}$. We write 
@@ -316,14 +316,18 @@
   \end{proof}
   
   \begin{remark}
-    Note that one can also derive the above expression through variational considerations of the \Cref{thm:dirichlet}. This approach is used by Chung in \cite{Chung}. Alternatively, one might also derive this expression by considering rates of heat diffusion. This method will be explored in Chapter ________ .
+    Note that one can also derive the above expression through variational considerations of the \Cref{thm:dirichlet}. This approach is used by Chung in \cite{Chung}. Alternatively, one might also derive this expression by considering rates of heat diffusion. This method will be explored in \Cref{chap:MOC}.
   \end{remark}
   
-  \begin{thm}
-    Cheeger lower bound.
+  \begin{thm}\label{thm:cheeger}
+  	Let $\lambda_0^{(D)} <\lambda_1^{(D)}$ be the two lowest Dirichlet eigenvalues of $S \cup \delta S$ with corresponding eigenvectors $u,v$. Then, 
+  	\[
+	    \gamma^{(D)} \geq \Frac{h_S^2}{2 \left(\langle D \rangle_v - 2\lambda_0\right)}
+	\]
+	where $\langle D \rangle_v = \sum_{x \in S} d_{v_x} v_x^2$.
   \end{thm}
   \begin{proof}
-    We begin by recalling \Cref{lem:gap-operator},
+    Let $S^+ = \{x \in V(S) \vert v \geq 0 \}$. Assume that the host graph $S \cup \delta S$ has corresponding Laplacian $L = D - A$, where $D x = \sum_{y \sim x} w(y,x)x$ and $A x = \sum_{y\sim x} w(y,x)y$. Without loss of generality, we assume that $\langle D \rangle_{v\vert_{S^+}} \leq \langle D \rangle_{v}$.. (Note that if this were not true, we could simply take $v \mapsto -v$. We begin by recalling \Cref{lem:gap-operator},
     \begin{dgroup*}
         \begin{dmath*}
             \gamma^{(D)}f_y u_y^2 = \sum_{x \in V(S) \cup \delta S}w(y,x) \left(f_y -f_x \right)u_x u_y
@@ -365,45 +369,53 @@
             \Phi = \Frac{\sum_{\{y,x\} \in E(S)}w(y,x) \left(g_y - g_x \right)^2 u_x u_y}{\sum_{y} g_y^2 u_y^2}\cdot \Frac{\sum_{\{y,x\} \in E(S)} \left(g_y + g_x \right)^2 u_x u_y w(y,x)}{\sum_{\{y,x\} \in E(S)} (g_y+g_x)^2 u_y u_x w(y,x)}
         \end{dmath*}
         \begin{dmath*}
-            \geq \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\sum_{y} g_y^2 u_y^2\left(\sum_{\{y,x\} \in E} (g_y+g_x)^2 u_y u_x w(y,x)\right)}
+            \geq \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\sum_{y} g_y^2 u_y^2\left(\sum_{\{y,x\} \in E(S)} (g_y+g_x)^2 u_y u_x w(y,x)\right)}
         \end{dmath*}
         \begin{dmath*}
-            = \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\sum_{y} g_y^2 u_y^2\left(\sum_{\{y,x\} \in E} \left(2g_y^2+2g_x^2-(g_y-g_x)^2\right) u_y u_x w(y,x)\right)}
+            = \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\sum_{y} g_y^2 u_y^2\left(\sum_{\{y,x\} \in E(S)} \left(2g_y^2+2g_x^2-(g_y-g_x)^2\right) u_y u_x w(y,x)\right)}
         \end{dmath*}
         \begin{dmath*}
-            = \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\sum_{y} g_y^2 u_y^2\left(2\sum_{y}g_y^2 u_y \sum_x u_x w(y,x) -\sum_{\{y,x\} \in E} \left((g_y-g_x)^2\right) u_y u_x w(y,x)\right)}
+            = \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\sum_{y} g_y^2 u_y^2\left(2\sum_{y}g_y^2 u_y \sum_x u_x w(y,x) -\sum_{\{y,x\} \in E(S)} \left((g_y-g_x)^2\right) u_y u_x w(y,x)\right)}
         \end{dmath*}
     \end{dgroup*}
     where the inequality follows directly from Cauchy-Schwarz. Next, for the denominator, we recall \cref{eqn:operator-dirichlet},
     \begin{dgroup*}
         \begin{dmath*}
-            \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\sum_{y} g_y^2 u_y^2\left(2\sum_{y}g_y^2 u_y\left (\sum_x w(y,x) -\lambda_0^{(D)}\right) u_y -\sum_{\{y,x\} \in E} \left((g_y-g_x)^2\right) u_y u_x w(y,x)\right)}
+            \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\sum_{y} g_y^2 u_y^2\left(2\sum_{y}g_y^2 u_y\left (\sum_x w(y,x) -\lambda_0^{(D)}\right) u_y -\sum_{\{y,x\} \in E(S)} \left((g_y-g_x)^2\right) u_y u_x w(y,x)\right)}
         \end{dmath*}
         \begin{dmath*}
-            = \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\sum_{y} g_y^2 u_y^2\left(2\sum_{y}g_y^2u_y^2\left (\sum_x w(y,x) -\lambda_0^{(D)}\right) -\sum_{\{y,x\} \in E} (g_y-g_x)^2 u_y u_x w(y,x)\right)}
+            = \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\sum_{y} g_y^2 u_y^2\left(2\sum_{y}g_y^2u_y^2\left (\sum_x w(y,x) -\lambda_0^{(D)}\right) -\sum_{\{y,x\} \in E(S)} (g_y-g_x)^2 u_y u_x w(y,x)\right)}
         \end{dmath*}
         \begin{dmath*}
             = \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\left(\sum_{y} g_y^2 u_y^2\right)^2\left( 2\frac{\sum_{y}g_y^2u_y^2\sum_x w(y,x)}{\sum_{y} g_y^2 u_y^2} - 2 \lambda_0^{(D)} - \Phi \right)}
         \end{dmath*}
         \begin{dmath*}
-            = \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\left(\sum_{y} g_y^2 u_y^2\right)^2\left( 2\frac{\sum_{y}g_y^2u_y^2\left(d_y + W(y)\right)}{\sum_{y} g_y^2 u_y^2} - 2 \lambda_0^{(D)} - \Phi \right)}
+            = \Frac{\left(\sum_{\{y,x\} \in E(S)}\lvert g_y^2 - g_x^2 \rvert u_x u_y w(y,x) \right)^2}{\left(\sum_{y} g_y^2 u_y^2\right)^2\left( 2\frac{\sum_{y}g_y^2u_y^2 d_y}{\sum_{y} g_y^2 u_y^2} - 2 \lambda_0^{(D)} - \Phi \right)}.
+        \end{dmath*}
+	\end{dgroup*}
+	
+In order to derive a bound, we now sort the components of $v$ supported by $S^+$. In particular, we order the components such that $0 < v_{x_i} \leq v_{x_{i+1}}$ for all $x_i, x_{i+1} \in S^+$. We construct cuts $C_i$ such that,
+	\[
+		C_i = \{ \{x_j,x_k\} \in E(S) \vert j \leq i < k \}
+	\]
+	or, in other words, we cut vertices that connect amplitudes of $v$ less than or equal to $v_i$ to amplitudes of $v$ greater than $v_i$. Then, by noting that our ordering guarantees $\lvert g_x^2 - g_y^2 \rvert \geq \lvert g_{x_i}^2 - g_{x_{i+1}}^2$ and considering our choice of cut for $i$, we have that 
+	\begin{dgroup*}        
+        \begin{dmath*}
+            \Phi \geq \Frac{\left(\sum_i \lvert g_{v_i}^2 - g_{v_{i+1}}^2 \rvert \sum_{C_i} u_x u_y w(y,x) \right)^2}{\left(\sum_{y} g_y^2 u_y^2\right)^2\left( 2\frac{\sum_{y}g_y^2u_y^2 d_y}{\sum_{y} g_y^2 u_y^2} - 2 \lambda_0^{(D)} - \Phi \right)}
         \end{dmath*}
         \begin{dmath*}
-            \geq \Frac{\left(\sum_{y}\left(\min_{x\sim y} \lvert g_y^2 - g_x^2 \rvert \right) \sum_{x} u_x u_y w(y,x) \right)^2}{\left(\sum_{y} g_y^2 u_y^2\right)^2\left( 2\frac{\sum_{y}g_y^2u_y^2\left(d_y + W(y)\right)}{\sum_{y} g_y^2 u_y^2} - 2 \lambda_0^{(D)} - \Phi \right)}
+            \geq \Frac{\left(\sum_i \lvert g_{v_i}^2 - g_{v_{i+1}}^2 \rvert \sum_{j\leq i} h_S u_i^2 \right)^2}{\left(\sum_{y} g_y^2 u_y^2\right)^2\left( 2\frac{\sum_{y}g_y^2u_y^2 d_y}{\sum_{y} g_y^2 u_y^2} - 2 \lambda_0^{(D)} - \Phi \right)}
         \end{dmath*}
         \begin{dmath*}
-            \geq \Frac{\left(\sum_{y}\left(\min_{x\sim y} \lvert g_y^2 - g_x^2 \rvert \right) h_S \sum_{x\in +} u_x^2 \right)^2}{\left(\sum_{y} g_y^2 u_y^2\right)^2\left( 2\frac{\sum_{y}g_y^2u_y^2\left(d_y + W(y)\right)}{\sum_{y} g_y^2 u_y^2} - 2 \lambda_0^{(D)} - \Phi \right)}
+            \geq \Frac{h_S^2}{2 \langle D \rangle_v - 2\lambda_0 - \Phi}
         \end{dmath*}
         \begin{dmath*}
-            \geq \Frac{h_S^2}{2 \langle D + W \rangle_v - 2\lambda_0 - \Phi}
-        \end{dmath*}
-        \begin{dmath*}
-            = \Frac{h_S^2}{2\lambda_1 + \langle A \rangle_v - 2\lambda_0 - \Phi}
-        \end{dmath*}
-        \begin{dmath*}
-            = \Frac{h_S^2}{2\gamma^{(D)} + \langle A \rangle_v - \Phi}
+            \geq \Frac{h_S^2}{2 \langle D \rangle_v - 2\lambda_0}
         \end{dmath*}
     \end{dgroup*}
+      where the second inequality followed from our assumption that $\langle D \rangle_{v \vert_{S^+}} \rangle \leq \langle D \rangle_{v} \rangle$.
   \end{proof}
+  
+At this point, one might wish to note that in the context of adiabatic optimization, one can combine \Cref{thm:cheeger} with \Cref{thm:gap-conservation} to derive a bound explicitly in terms of the ground-state and applied directly to the gap minimum. Considerations of this sort will be considered in the next chapter.
   
 %\end{document}

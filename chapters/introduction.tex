@@ -1,15 +1,45 @@
+\let\oldrVert\rVert
+\let\oldlVert\lVert
+
+\renewcommand{\lVert}{\left\oldlVert}
+\renewcommand{\rVert}{\right\oldrVert}
+
 \chapter{Introduction}
 
-In this chapter we introduce the basics of adiabatic theory. We will largely focus on the adiabatic model of quantum computing, sub-stochastic processes, and heat diffusion. Certain information about all three of these processes, a particular form of equilibration, can be addressed through an analysis of the spectral gap of some operator. In \Cref{sec:adiabatic-optimization}, we will introduce the model of quantum adiabatic optimization and recall certain well-known theorems about adiabaticity. In \Cref{sec:heat-diffusion}, we will introduce heat diffusion, its relationship to adiabatic optimization, and estimates on the equilibration time of a heat-diffusion process. In \Cref{sec:sub-stochastic}, we will define a sub-stochastic process and prove estimates on their equilibration time by relating them back to heat diffusion. 
+This dissertation focuses on the problem of bounding the spectral gap of Schr\"{o}dinger operators. Although of reasonably broad mathematical interest, our primary motivation for studying this problem arises in the context of adiabatic quantum computing. Roughly speaking, adiabatic quantum algorithms slowly vary a quantum state that is easy to prepare into one that encodes the solution to some computational problem \cite{Farhi_science}. Although adiabatic quantum computation can perform universal quantum computation \cite{ADKLLR07}, the technique is most easily applied to optimization problems, our current focus. Quantum adiabatic theorems tell us precisely how slowly our variation must progress.
+
+The dynamics of an adiabatic process, and of course all quantum processes, are governed by Schr\"{o}dinger's equation, $i \partial_t \psi(t) = H(t) \psi(t)$. The Hermitian operator $H$ is known as the Hamiltonian of the system, and we denote its spectrum $\lambda_0 \leq \lambda_1 \leq \lambda_2 \dots \leq \lambda_N$.\footnote{In general, these Hermitian operators $H$ are known as either Hamiltonians or Schr\"{o}dinger operators, where the term ``Schr\"{o}dinger operator'' is preferred in the differential equations literature, seemingly because of increased generality. Although ``Hamiltonian'' might imply something physical about the operator, in this dissertation we will use the two terms synonymously, as we are predominantly concerned with the mathematical properties of such operators.} We call $\gamma(s) = \lambda_1(s) - \lambda_0(s)$ the spectral gap of $H(s)$ and let $\gamma_\min = \min_s \gamma(s)$. If $\gamma_\min > 0$ we call the Hamiltonian ``gapped''. Most adiabatic theorems focus on such gapped Hamiltonians, and our goal will be to develop techniques for estimating the spectral gap given that it is non-zero.
+
+In this chapter we introduce the basics of adiabatic quantum computation, heat diffusion, and discrete sub-stochastic processes. Certain information about all three of these processes, in each a particular form of equilibration, can be addressed through an analysis of the spectral gap of a corresponding operator. The primary goal of this chapter is to make clear the connection between these three areas of study and the question of determining the spectral gap. In \Cref{sec:adiabatic-optimization}, we will introduce the model of quantum adiabatic optimization and recall certain well-known theorems about adiabaticity. In \Cref{sec:heat-diffusion}, we will introduce heat diffusion, its relationship to adiabatic optimization, and estimates on the equilibration time of a heat-diffusion process. In \Cref{sec:sub-stochastic}, we will define a sub-stochastic process and prove estimates on their equilibration time by relating them back to heat diffusion. 
 
 
 \section{Adiabatic Optimization}\label{sec:adiabatic-optimization}
 
-In adiabatic optimization, we assume that we are given a Hamiltonian $H(T)$ with a ground state $u(T)$ that encodes the solution to some optimization problem of interest. Our strategy is to prepare a known ground-state $u(0)$ of some other Hamiltonian $H(0)$ and slowly adjust $H$ from $H(0)$ into $H(T)$ according to some continuous path $H(t)$. The probability of success of this strategy, then, is governed by the adiabatic theorem. 
+Adiabatic optimization is a strategy for quantum computing where we assume that we are given a Hamiltonian $H(T)$ with ground-state $u(T)$ that encodes the solution to some optimization problem of interest. Our strategy is to prepare a known ground-state $u(0)$ of some other Hamiltonian $H(0)$ and slowly adjust $H$ from $H(0)$ into $H(T)$ according to some continuous path $H(t)$. The probability of success of this strategy, then, is governed by the adiabatic theorem. 
 
-\begin{thm}\label{thm:adiabatic}
-    The adiabatic theorem.
+A proof of the adiabatic theorem is beyond the scope of this chapter, however, numerous versions exist \cite{kato1950adiabatic,JRS07,Venuti2015}. Some work has been done on  deriving adiabatic theorems for operators without a spectral gap \cite{schmid2014adiabatic,avron1999adiabatic,avron1998adiabatic}, but folklore amongst most physicists remains that a spectral gap is required for adiabatic behavior. Our interest at present, therefore, is restricted to ``gapped'' adiabatic theorems. We recall what is perhaps the most widely used adiabatic theorem adapted from Jansen, Ruskai, and Seiler \cite[Theorem 4]{JRS07}:
+
+\begin{thm}[Adiabatic theorem]\label{thm:adiabatic}
+    Let $\psi(t)$ be the ground state of a Hamiltonian $H(t/\tau)$. Then, if $\phi(t)$ satisfies 
+    \[
+	    \begin{cases}
+    		i \frac{d \phi}{d t} = H\left(\frac{t}{\tau}\right) \phi(t) \\
+    		\phi(0) = \psi(0)
+    	\end{cases}
+    \]
+    we have that
+    \[
+    	\lVert \phi(t) - \psi(t) \rVert \lesssim O\left(\frac{m h_\max}{\tau \gamma_\min^2}\right)
+    \]
+    where $\gamma_\min = \min_s \gamma(s)$, $m$ is the number of eigenvalues of $H$, and 
+    \[ 
+    	h_\max = \sup_s \max\left\{\lVert H(s) \rVert, \allowbreak \lVert \dot{H}(s) \rVert \allowbreak, \lVert \stackrel{\dots}{H}(s) \rVert\right\}.
+    \]
 \end{thm}
+
+The adiabatic theorem is the primary tool for determining the runtime of an adiabatic optimization algorithm. In particular we see that the theorem predicts convergence of a state prepared in an initial ground-state $\psi(0)$ to the final ground state $\psi(\tau)$ if $\tau \sim \gamma_\min^{-2}$. 
+
+	The general recipe for the adiabatic optimization algorithm, then, is to create an easy-to-prepare $\psi(0)$ and vary it by the conditions of \Cref{thm:adiabatic} into $\phi(\tau)$. By choosing $\tau$ to be sufficiently large, as governed by the theorem, we can guarantee convergence in $\ell^2$-norm of the $\phi(\tau)$ to the final ground-state $\psi(\tau)$. If we can construct a final Hamiltonian $H(\tau)$ such that $\psi(\tau)$ encodes the solution to a problem of interest, we claim that we have solved the problem. 
 
 
 \section{Heat Diffusion}\label{sec:heat-diffusion}
@@ -28,10 +58,10 @@ In adiabatic optimization, we assume that we are given a Hamiltonian $H(T)$ with
     \end{equation}
     where the constants $C_i$ are uniquely determined by 
     \[
-        C_i = \frac{f(0).u_i}{u_i^2}.
+        C_i = \frac{f(0) \cdot u_i}{u_i^2}.
     \]
     
-    Now, we wish to examine the rate at which $f$ approaches something proportional to the lowest eigenfunction $u_0$, which we assume is everywhere nonzero. In particular, we consider componentwise ratios $g_i = u_i/(C_0 u_0)$ and rewrite \cref{eqn:heat-sol} as
+    Now, we wish to examine the rate at which $f$ approaches something proportional to the lowest eigenfunction $u_0$, which we assume is everywhere nonzero. Also, without loss of generality, we assume that $C_0 > 0$. In particular, we consider componentwise ratios $g_i = u_i/(C_0 u_0)$ and rewrite \cref{eqn:heat-sol} as
     \begin{equation}\label{eqn:heat-sol2}
         f(t) = C_0 u_0 e^{-\lambda_0 t} \sum_i \frac{C_i}{C_0} g_i e^{-(\lambda_i-\lambda_0) t}.
     \end{equation}
@@ -41,13 +71,13 @@ In adiabatic optimization, we assume that we are given a Hamiltonian $H(T)$ with
             \frac{f(t)}{C_0 u_0 e^{-\lambda_0 t}}= 1 + \sum_{i>0} \frac{C_i}{C_0} g_i e^{-(\lambda_i-\lambda_0) t}
         \end{dmath*}
         \begin{dmath*}
-            \left\lVert \frac{f(t)}{C_0 u_0 e^{-\lambda_0 t}} - 1 \right\rVert = \left\lVert \sum_{i>0} \frac{C_i}{C_0} g_i e^{-(\lambda_i-\lambda_0) t} \right\rVert
+            \lVert \frac{f(t)}{C_0 u_0 e^{-\lambda_0 t}} - 1 \rVert = \lVert \sum_{i>0} \frac{C_i}{C_0} g_i e^{-(\lambda_i-\lambda_0) t} \rVert
         \end{dmath*}
         \begin{dmath*}
-            \leq \sum_{i>0} \left\lVert  \frac{C_i}{C_0} g_i e^{-(\lambda_i-\lambda_0) t} \right\rVert
+            \leq \sum_{i>0} \lVert  \frac{C_i}{C_0} g_i e^{-(\lambda_i-\lambda_0) t} \rVert
         \end{dmath*}
         \begin{dmath*}
-            \leq \sum_{i>0} \left\lVert  \frac{C_i}{C_0} g_i \right\rVert e^{-\gamma t}
+            \leq \sum_{i>0} \lVert  \frac{C_i}{C_0} g_i \rVert e^{-\gamma t}
         \end{dmath*}
         \begin{dmath*}
             \leq C e^{-\gamma t}
@@ -58,27 +88,75 @@ In adiabatic optimization, we assume that we are given a Hamiltonian $H(T)$ with
     In fact, because heat diffusion is equivalent to to Schr\"{o}dinger evolution by the Wick rotation $i \mapsto i t$, one might naturally think of the role of the gap as similar in both adiabatic optimization and heat diffusion.
     
 \section{Sub-stochastic Processes}\label{sec:sub-stochastic}
+	This section discusses sub-stochastic processes. A sub-stochastic process is a Markov process for a population that trends almost surely to death \cite{collet2012quasi,darroch1965quasi}. Although less studied than traditional Markov processes, sub-stochastic processes have broad applications from ecology and population dynamics to classical algorithms \cite{JJLO,meleard2012quasi}. 
+	To characterize a sub-stochastic process, we define a measurable state space $\mathcal{X} \cup \partial \mathcal{X}$. We define a Markov process $X=(X_t:t\geq 0)$ on $\mathcal{X} \cup \partial\mathcal{X}$ and consider the family of distributions $\mathbb{P}_x$ for some initial condition $x \in \mathcal{X}$. The boundary $\partial \mathcal{X}$ is taken to be absorbing or 	
+	\[
+		\mathbb{P}_\cdot(x_{t > t_0} \in \partial \mathcal{X} \vert x_{t_0} \in \partial \mathcal{X}) = 1.
+	\]
+	In this context, our primary interest is in quasi-stationary distributions (QSDs). A QSD is a distribution $\nu$, such that
+	\[
+		\mathbb{P}_\nu ( x_{t} \in B \vert x_t \notin \delta \mathcal{X}) = \nu(B)
+	\]	
+	for a subset $B \in \mathcal{X}$, or a distribution which is stationary when conditioned on remaining alive. 
 
+	Our interest  in these processes arises mostly due to their similarity to heat diffusion. In particular, for a finite, discrete state space, we encode a sub-stochastic process in a matrix $H$ satisfying
+	\begin{enumerate}
+		\item $H_{xy} \geq 0 \; \forall \; x,y \in \mathcal{X}$ and
+		\item $\sum_{y} H_{x,y} \leq 1 \; \forall \; x \in \mathcal{X}$.
+	\end{enumerate}
+	
+	Under these restrictions, we again wish to see how rapidly an arbitrary distribution $f$ approaches a quasi-stationary distribution. Similar to (but in reverse order from) \cref{eqn:heat-diffusion} we write the eigenvalues of $H$ as $1\geq \lambda_0 > \lambda_1 \geq \lambda_2 \dots \geq \lambda_N \geq 0$ and corresponding eigenvectors $u_0,u_1,\dots,u_N$. (The restriction to $\lambda_0 > \lambda_1$ corresponds to the restriction that our walk is over a connected space.) In this case, we define the spectral gap $\gamma = \lambda_0 - \lambda_1$. Then, we apply the walk 
+	\[
+		H^t v = \sum_i C_i u_i \lambda_i^t
+	\]
+	where we again assume that $C_0 \neq 0$. Now,
+	\[
+		\lVert \frac{H^t v}{C_0 u_0 \lambda_0^t} - 1 \rVert = \lVert \sum_{i>0} f_i \frac{\lambda_i^t} {\lambda_0^t} \rVert
+	\]
+	where $f_i = (C_i u_i)/(C_0 u_0)$. Note that the $\lambda_i$ are arranged in decreasing order so that
+	\begin{dgroup*}
+		\begin{dmath*}
+		\lVert \frac{H^t v}{C_0 u_0 \lambda_0^t} - 1 \rVert \leq \lVert \sum_{i>0} f_i \rVert \frac{\lambda_1^t} {\lambda_0^t}
+		\end{dmath*}
+		\begin{dmath*}
+			\leq C \frac{\lambda_1^t} {\lambda_0^t}
+		\end{dmath*}
+		\begin{dmath*}
+			= C \frac{(\lambda_0-\gamma)^t} {\lambda_0^t} 
+		\end{dmath*}
+		\begin{dmath*}
+			= C \left(1-\frac{\gamma}{\lambda_0}\right)^t
+		\end{dmath*}
+		\begin{dmath*}
+			\leq C \left(1-\gamma \right)^t
+		\end{dmath*}
+		\begin{dmath*}
+			\leq C e^{-\gamma t}
+		\end{dmath*}
+	\end{dgroup*}
+	for some absolute constant $C$. Hence, we see that a sub-stochastic process approaches its quasi-stationary distribution with the same bound as a heat-diffusive process.
+	
 \section{The Rayleigh Quotient}
   Important to our discussion throughout the subsequent chapters will be the Rayleigh quotient. In general, for a Hermitian operator $H$ and some nonzero function $u$
   \[
-    \Frac{\expected{H}_u}{u^* u}
+    \Frac{\sum_i u^*_i H_{ij} u_j}{u^* u} = \expected{H}_u
   \]
-  is known as a Rayleigh quotient. If $H$ has eigenfunctions $\{u_i\}$, then its eigenvalues are given by
+  is known as a Rayleigh quotient. The Rayleigh quotient, in quantum mechanical terms, is nothing more than the expected value of the operator $H$ under the state $u$. If $H$ has eigenfunctions $\{u_i\}$, then its eigenvalues are given by
   \[
-      \lambda_i = \Frac{\expected{H}_{u_i}}{u^* u}.
+      \lambda_i = \expected{H}_{u_i}.
   \]
     It is easy to see, then, that the lowest eigenvalue $\lambda_0$ is given by
   \[
-        \lambda_0 = \inf_{u \neq 0} \Frac{\expected{H}_u}{u^* u}
+        \lambda_0 = \inf_{u \neq 0} \expected{H}_u
   \]
   since the Rayleigh quotient must always be greater than or equal to the lowest eigenvalue. If $H$ is nondegenerate, or has spectrum $\lambda_0 < \lambda_1 < \dots \lambda_n$, let $S_i$ be the space spanned by the $i$ lowest eigenvectors. Then, 
   \begin{equation}\label{eqn:Rayleigh-eigenvalue}
-        \lambda_i = \inf_{\substack{u \perp S_i \\ u \neq 0}} \Frac{\expected{H}_u}{u^* u}.
+        \lambda_i = \inf_{\substack{u \perp S_i \\ u \neq 0}} \expected{H}_u.
   \end{equation}
   This particular form of the Rayleigh quotient will be the object we are most interested in what follows. By utilizing a more careful definition of $S_i$, we could accommodate degenerate spectra. Nonetheless, because we are never going to be interested in $i>1$ and we will always restrict ourselves to the case that $\lambda_1 -\lambda_0 > 0$, we hereafter assume that all operators discussed have nondegenerate spectra without loss of generality.  
   
 \section{Minimal gap conservation}
+An interesting property that one can derive about interpolated Hamiltonians (such as the standard adiabatic linear interpolation $H(t) = (1-t)H_0 + t H_1$) is that critical points in the spectrum are conserved over the course of an interpolation. This is an immediate consequence of the well-known Hellman-Feynman theorem, which will also be used in later chapters.
     \begin{restatable}{thm}{HellmanFeynman}
       \label{thm:Hellman-Feynman}
       Let $H(\alpha)$ be a Hermitian operator (matrix) dependent upon a parameter $\alpha$ with non-degenerate eigenvalue $\lambda(\alpha)$ and associated eigenfunction $u(\lambda;\alpha)$. Then
@@ -90,7 +168,7 @@ In adiabatic optimization, we assume that we are given a Hamiltonian $H(T)$ with
     
     It should be noted that the theorem is typically stated for a Hermitian operator $H(\alpha)$ with eigenvalues $\lambda_0 < \lambda_1 < \dots < \lambda_N$. Care must be taken in the application of this theorem when considering degenerate eigenvalues \cite{Vatsya2004,Zhang2004} which can sometimes occur. For instance, the ring graph with constant potential has degeneracies. Nonetheless, since the cases we consider in this dissertation are non-degenerate, we can use this theorem in its above-stated form.
     
-    The Hellman-Feynman theorem will be utilized in ________ for proving ______. However, even in the context of adiabatic optimization, it has a non-trivial, somewhat surprising consequence.
+    The Hellman-Feynman theorem will be utilized in \Cref{chap:fundamental_gap} for proving a one dimensional gap theorem. However, even in the context of adiabatic optimization, it has a non-trivial, somewhat surprising consequence.
     
     \begin{thm}\label{thm:gap-conservation}
         Let $H(s) = (1-a(s))H_0 + a(s) H_1$ be a Hermitian operator with non-zero spectral gap $\gamma(s)$ and $a$ monotone-increasing and once differentiable for $s \in I$. Suppose that $\gamma(s)$ has a stationary point $s_0$ internal to $I$. Then, the two lowest eigenfunctions $u,v$ of $H(s_0)$ satisfy

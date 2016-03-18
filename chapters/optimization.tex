@@ -2,42 +2,13 @@
 
 \section{Introduction}
 
-In adiabatic quantum algorithms one starts with an initial Hamiltonian
-whose ground state is easy to construct, such as a tensor product
-state. One prepares the system in its ground state and then 
-slowly varies the Hamiltonian to reach one whose ground state encodes
-the solution to a computational problem of interest
-\cite{Farhi_science}. The adiabatic theorem states that if the 
-time-variation of the Hamiltonian is performed sufficiently slowly
-then the system will track the instantaneous ground state, thereby
-solving the computational problem. Specifically, for constant-rate
-interpolation between the initial and final Hamiltonians, it suffices
-to choose the duration of the adiabatic process to scale as
-$1/\gamma^3$, where $\gamma$ is the minimal eigenvalue gap between the
-ground state and first excited state during the adiabatic process
-\cite{JRS07}. (More recently, it has been shown that, by instead
-choosing the Hamiltonian's interpolation schedule to be a smooth
-function with zero initial and final time-derivative, one can
-provably achieve runtime of $\widetilde{O}(1/\gamma^2)$
-\cite{Elgart_Hagedorn}.) Adiabatic quantum computation with
-sufficiently general Hamiltonians can perform universal quantum
-computation \cite{ADKLLR07}. However, the most natural application for
-adiabatic quantum algorithms is optimization, and most analysis has
-focused on this case.
-
-One of the original intuitions behind adiabatic quantum computation
+An original intuition of adiabatic quantum computation
 (and an earlier classical algorithm called quantum annealing
-\cite{FGSSD94}) was that quantum optimization algorithms could in some
-cases tunnel out of local minima that simulated annealing would fail
-to climb out of. The runtime of adiabatic algorithms for various
-specific potentials with local minima has been analyzed in \cite{R04,
-  DMV01, FGG02, VDV03, aminchoi, Amin}. Here we investigate the more basic
-question of whether quantum adiabatic algorithms always succeed in
-efficiently solving ``trivial'' optimization problems that have no
-local energy minima other than the global minimum. Surprisingly, we
-find a counterexample in which the potential has no local minima other
-than the global minimum, yet the eigenvalue gap is exponentially
-small.
+\cite{FGSSD94}) is that quantum optimization algorithms can in some
+cases tunnel out of local minima that would trap a classical algorithm known as simulated annealing. The runtime of adiabatic algorithms for variousspecific potentials with local minima has been analyzed in \cite{R04,
+  DMV01, FGG02, VDV03, aminchoi, Amin}. In this chapter we investigate the more basic
+question of whether quantum adiabatic algorithms always
+efficiently solve ``trivial'' optimization problems, or problems where the only local energy minimum is the global minimum. As one might intuit from \Cref{thm:cheeger}, we can construct a Hamiltonian with an exponentially small ``bottleneck'' in the distribution, thus causing an exponentially small gap.
 
 Specifically, we consider Hamiltonians associated with graphs,
 consisting of the graph Laplacian plus a potential on the
@@ -46,7 +17,7 @@ vertices in the graph. The vertices may be labeled with bit strings
 corresponding to basis states of a set of
 qubits. Physically, one can interpret the Hamiltonian
 as describing a single particle hopping amongst the vertices.) In
-\S \ref{counter} we construct a single-basin potential on a graph
+\Cref{counter} we construct a single-basin potential on a graph
 such that the eigenvalue gap between the ground state and first
 excited state is exponentially small as a function of the number of
 vertices. This corresponds to a trivial optimization problem for which
@@ -65,11 +36,10 @@ widely assumed conjecture, namely that potentials without local
 minima yield polynomial eigenvalue gaps. 
 
 Our counterexample has a ground state consisting of two ``lobes'' with
-exponentially small amplitude in the region between them. In \S
-\ref{sec:conductance} we use arguments based on conductance of Markov
+exponentially small amplitude in the region between them. In \Cref{sec:conductance} we use arguments based on conductance of Markov
 chains to show that the eigenvalue gap shrinks at worst quadratically
 with the number of vertices provided the ground state wavefunction is
-single-peaked. (See proposition \ref{mainprop}.) Thus, the two-lobed
+single-peaked. (See \Cref{mainprop}.) Thus, the two-lobed
 nature of the ground state in our counterexample is an essential
 feature. In other words, we find that the structure of local extrema
 in the potential does not neatly characterize the eigenvalue gap, but
@@ -85,7 +55,7 @@ of proposition \ref{mainprop}, an $\Omega(1/(|W|\ell^2))$ lower bound
 on the gap for the path of $\ell$ vertices and a potential of norm
 $|W|$. By adapting Poincar\'e's inequality we are able to obtain an
 $\Omega(1/\ell^2)$ lower bound, with no dependence on $|W|$. This
-lower bound is tight to within a constant factor \cite{Jarret_Jordan},
+lower bound is tight to within a constant factor \cite{Jarret2014c},
 and forms a discrete analog of \cite{PW}. Previous work has shown that
 for symmetric potentials on the path graph that increase as one moves
 away from the center, the eigenvalue gap is lower bounded by
@@ -98,23 +68,14 @@ exponential speedups over classical algorithms. For this purpose, one
 seeks to find a potential on a highly-connected graph of exponentially
 many vertices (often the hypercube) such that the eigenvalue gap is
 only polynomially small. This differs somewhat from the setting
-studied in the present paper - we consider graphs of polynomially many
+studied in the present chapter - we consider graphs of polynomially many
 vertices and ask whether the gap is exponentially small or
 polynomially small. Thus, our counterexample in which the gap is
 already exponentially small on a graph of only polynomially many
 vertices constitutes an even more extreme gap collapse than previous
-examples such as \cite{AKR10}. On the other hand, our gap lower bounds
-(``positive results'') might appear weak - they provide
-$\Omega(1/|V_G|^2)$ lower bounds on the eigenvalue gap where $|V_G|$ is
-the number of vertices in the underlying graph. However, in some
-highly symmetric cases, such as optimization problems on the hypercube
-with potentials that depend only on Hamming distance from the energy
-minimum, the eigenvalue gap can be analyzed by collapsing the
-Hamiltonian to a spectrally-equivalent Hamiltonian on an exponentially
-smaller graph. (In the hypercube case, the vertices of the collapsed
-graph correspond to the allowed Hamming weights, see \emph{e.g.}
-\cite{Jarret_Jordan}.) Application of the tools presented here for
-lower-bounding gaps in such cases remains for future work.
+examples such as \cite{AKR10}. 
+
+In this chapter, since the math is somewhat less technical, we adopt standard Dirac notation. Most of the content of this section can also be found in \cite{Jarret2014b}.
 
 \section{Preliminaries}
 \label{sec:preliminaries}
@@ -128,16 +89,12 @@ L_G = \sum_{x \in V_G} d_x \ket{x} \bra{x} - \sum_{(x,y) \in E_G} \ket{x} \bra{y
 \end{equation}
 where $d_x$ denotes the degree of vertex $x$. 
 
-The subject of spectral graph theory is devoted to analysis of the
-eigenvalue spectra of graph Laplacians \cite{Chung}. Here,
-motivated by applications to adiabatic quantum computation
-\cite{Farhi_science}, we develop some theorems about the spectra of
-more general graph-related Hamiltonians of the form
+In this chapter, we consider the Dirichlet graph described by
 \begin{equation}
 \label{HGW}
 H_{G,W} = L_G + \sum_{x \in V_G} W(x) \ket{x} \bra{x},
 \end{equation}
-where $W:V_G \to \mathbb{R}$ is a potential energy
+where $W:V_G \to \mathbb{R}$ can be thought of as a potential energy
 function. 
 
 We say that $x \in V_G$ is a local minimum of $W$ if $W(x) \leq W(y)$ for
@@ -153,7 +110,7 @@ maximum at $x$ if
 \psi(x) \geq \psi(y) \  \forall y \textrm{ s.t. } (x,y) \in E_G.
 \end{equation}
 
-In \S \ref{sec:general} we prove a lower bound on the eigenvalue
+In \Cref{sec:general} we prove a lower bound on the eigenvalue
 gap in the case that the ground state wavefunction is
 single-peaked. By this, we mean that the set of local maxima of $\psi$ 
 form a connected set of vertices in $G$. This is a weaker condition
@@ -342,7 +299,6 @@ $O(\ell)$ vertices we obtain an eigenvalue gap of $O((2/3)^{2\ell})$.
 
 \section{Conductance-based Gap Bounds}
 \label{sec:conductance}
-
 In the preceding section, we showed that a ground state consisting of
 two symmetric lobes separated by a region of small amplitude implies a
 small eigenvalue gap. We relied on the symmetry of the lobes to
@@ -934,7 +890,7 @@ By direct calculation, one finds that the eigenvalue gap for the
 length $l$ chain with no potential ($W=0$) is $4 \sin^2 \left(
   \frac{\pi}{2 l} \right)$. Thus, the bound (\ref{final}) is
 asymptotically tight to within a factor of $\pi^2$
-\cite{Jarret_Jordan}.
+\cite{Jarret2014c}.
 
 \section{Application to Adiabatic Optimization Algorithms}
 \label{aqc}
@@ -1069,32 +1025,5 @@ For a Hamiltonian in which the ground state is always single-peaked,
 \tau = \widetilde{O}(V_G^4).
 \end{equation}
 
-\section{Concluding Remarks}
 
-The examples analyzed here and in \cite{R04, DMV01, FGG02, VDV03,
-  aminchoi} show that quantum adiabatic algorithms can succeed in
-finding the minimum in polynomial time in cases where classical local
-search fails to do so, and it can fail in cases where classical local
-search succeeds. For both classical local search and adiabatic
-optimization, local minima of the potential that one is seeking to
-minimize play an important role in determining runtime. However, as
-the present work shows, these local minima do not tell the whole
-story. In particular, absence of local minima does not imply large
-eigenvalue gap.
-
-In addition, we note that there remains much to be learned regarding
-the performance of adiabatic optimization algorithms relative to
-classical computation in the general case that one is not comparing
-only to classical local search. In particular, the classical algorithm
-described in appendix A of \cite{childswalk} finds the minimum in
-polynomial time for most of the known examples in which adiabatic
-optimization beats classical local search. We hope that the tools
-developed here will be helpful in investigating this issue.\\ 
-
-\noindent
-\textbf{Acknowledgments: }We thank Amanda Streib, Noah Strieb, and
-Alexey Gorshkov for useful conversations. Portions of this paper are a
-contribution of NIST, an agency of the US government, and are not
-subject to US copyright. This work was supported in part by the center
-for Quantum Information and Computer Science (QuICS).
 
